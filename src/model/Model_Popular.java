@@ -1,0 +1,52 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package model;
+
+import javax.swing.Icon;
+
+/**
+ *
+ * @author hocgioinhatlop
+ */
+public class Model_Popular {
+    Icon image;
+    String title;
+    String description;
+
+    public Icon getImage() {
+        return image;
+    }
+
+    public void setImage(Icon image) {
+        this.image = image;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Model_Popular() {
+    }
+
+    public Model_Popular(Icon image, String title, String description) {
+        this.image = image;
+        this.title = title;
+        this.description = description;
+    }
+    
+}
