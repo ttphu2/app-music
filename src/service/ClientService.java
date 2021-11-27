@@ -9,29 +9,16 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.util.ArrayList;
+
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.FloatControl;
-import javax.sound.sampled.Line;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.Mixer;
-import javax.sound.sampled.UnsupportedAudioFileException;
-import lib.player.MP3Player;
+import model.Model_Music;
+
 import response.HomeDataRes;
 import singleton.SingletonMusicService;
+import util.Helper;
 /**
  *
  * @author hocgioinhatlop
@@ -55,6 +42,48 @@ public class ClientService {
             Logger.getLogger(ClientService.class.getName()).log(Level.SEVERE, null, ex);
         }
             return result;
+    }
+    public String getSongUrl128KBPS(String songId){
+        String result = null;
+        try {
+            String json = SingletonMusicService.getDataHubServiceInstance().getStreamingUrlBySongId(songId);
+            ObjectMapper om = new ObjectMapper();
+            JsonNode jsonNode = om.readTree(json);
+            if(!jsonNode.get("err").asText().equals("0"))
+            {
+                return result;
+            }
+            JsonNode jsonData = jsonNode.get("data").get("128");
+            result = jsonData.asText();
+            
+        } catch (JsonProcessingException ex) {
+            Logger.getLogger(ClientService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            return result;
+    }
+    public List<Model_Music> getHotSongInHubDetail(){
+        List<Model_Music> listReturn = new ArrayList<>();
+        try {
+            String json = SingletonMusicService.getDataHubServiceInstance().getHubDetail();
+            ObjectMapper om = new ObjectMapper();
+            JsonNode jsonNode = om.readTree(json);
+            if(!jsonNode.get("err").asText().equals("0"))
+            {
+                return null;
+            }
+            JsonNode jsonData = jsonNode.get("data").get("sections").get(1).get("items");
+            
+            int no=1;
+            for(JsonNode item : jsonData)
+            {
+                listReturn.add(new Model_Music(Integer.toString(no),item.get("title").asText(),Helper.formatSecondToMusicTime(item.get("duration").asInt()),item.get("duration").asInt(),item.get("encodeId").asText()));  
+                no++;
+            } 
+            
+        } catch (JsonProcessingException ex) {
+            Logger.getLogger(ClientService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            return listReturn;
     }
    
 }

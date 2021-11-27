@@ -1,11 +1,16 @@
 
 package component;
 
+import event.EventMenuClear;
+import event.EventMenuSelected;
 import java.awt.Component;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
+import javax.swing.SwingUtilities;
 import model.Model_Menu;
 
 /**
@@ -15,9 +20,33 @@ import model.Model_Menu;
  */
 public class ListMenu<E extends Object> extends JList<E>{
     private final DefaultListModel model;
+    private int selectedIndex = -1;
+    private EventMenuSelected event;
+    public void addEventMenuSelected(EventMenuSelected event)
+    {
+
+        this.event = event;
+    }
     public ListMenu() {
         model = new DefaultListModel();
         setModel(model);
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent me) {
+                if(SwingUtilities.isLeftMouseButton(me)){
+                    int index = locationToIndex(me.getPoint());
+                    Object o = model.getElementAt(index);
+                    selectedIndex = index;
+                    if(event != null)
+                    {
+                        event.selected(index);
+                        
+                    }
+                    repaint();
+                }
+            }
+            
+        });
         setOpaque(false);
     }
     
@@ -35,6 +64,7 @@ public class ListMenu<E extends Object> extends JList<E>{
                }
                ItemMenu item  = new ItemMenu(data);
                item.setSelected(selected);
+               
                return item;
             }
             

@@ -5,6 +5,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import model.Model_Popular;
+import singleton.SingletonMusicService;
 
 /**
  *
@@ -55,12 +56,13 @@ public class MostPopular extends javax.swing.JLayeredPane {
         );
     }// </editor-fold>//GEN-END:initComponents
     public void addImage(Model_Popular data){
+        
         ItemImage item = new ItemImage();
         item.setData(data);
         item.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                System.out.println(data.getTitle());
+               SingletonMusicService.getMusicServiceInstance().playNew(data.getSongId());
             }
         });
         panel.add(item);

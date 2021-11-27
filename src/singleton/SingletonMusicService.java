@@ -4,10 +4,6 @@ import service.ClientService;
 import service.DataHubService;
 import service.MusicService;
 
-
-
-
-
 public class SingletonMusicService {
     private static MusicService musicService=null;
     private static ClientService clientService=null;

@@ -11,6 +11,7 @@ import javax.swing.ListCellRenderer;
 import javax.swing.SwingUtilities;
 import model.Model_Menu;
 import model.Model_Music;
+import singleton.SingletonMusicService;
 
 /**
  *
@@ -29,6 +30,8 @@ public class ListMusic<E extends Object> extends JList<E>{
             public void mouseClicked(MouseEvent me) {
                if(SwingUtilities.isLeftMouseButton(me)){
                    playIndex = locationToIndex(me.getPoint());
+                   Model_Music item = (Model_Music) model.get(playIndex);
+                   SingletonMusicService.getMusicServiceInstance().playNew(item.getSongId());
                    repaint();
                }
             }

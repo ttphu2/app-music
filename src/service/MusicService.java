@@ -4,10 +4,7 @@
  * and open the template in the editor.
  */
 package service;
-
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
+import jaco.mp3.player.MP3Player;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -23,26 +20,41 @@ import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.Line;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.Mixer;
-import javax.sound.sampled.UnsupportedAudioFileException;
-import lib.player.MP3Player;
+
 /**
  *
  * @author hocgioinhatlop
  */
 public class MusicService {
 
-    private static MP3Player mP3Player;
-
-    public MusicService() {
+    public static MP3Player mP3Player;
+   // private static List<String> playList = 
+    //http://api.mp3.zing.vn/api/streaming/audio/ZUC7DBEC/128
+    public MusicService() {    
+        mP3Player = new MP3Player();
+        mP3Player.setRepeat(true);
+    }
+    public void init() {
+//        try {
+//          URL url1 = new URL("http://api.mp3.zing.vn/api/streaming/audio/ZW67OIA0/128");
+//          URL url2 = new URL("http://api.mp3.zing.vn/api/streaming/audio/ZU9AOO00/128");
+//          mP3Player = new MP3Player(url1,url2);
+//          mP3Player.setRepeat(true);
+//          mP3Player.stop();
+//        } catch (MalformedURLException ex) {
+//            Logger.getLogger(MusicService.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+    }
+    public void playNew(String songId) {
         try {
-            mP3Player = new MP3Player();
-            mP3Player.add(new URL("https://mp3-320s1-zmp3.zadn.vn/4bb2ed2e476aae34f77b/3577911789242606308?authen=exp=1637838287~acl=/4bb2ed2e476aae34f77b/*~hmac=8cb9b1edc1620edc28b53a913d4ffa18&fs=MTYzNzY2NTQ4Nzg1Mnx3ZWJWNnwxMDmUsIC3NDMxMTA3fDE0LjE2OS4xMzAdUngMA"));
-            mP3Player.add(new URL("https://mp3-320s1-zmp3.zadn.vn/f3067019d55d3c03654c/8359679502360460760?authen=exp=1637842620~acl=/f3067019d55d3c03654c/*~hmac=f378cc24983b70277bf1802451023dba&fs=MTYzNzY2OTgyMDEyOXx3ZWJWNnwxMDmUsIC3NDMxMTA3fDE0LjE2OS4xMzAdUngMA"));
+            mP3Player.stop();
+            mP3Player = mP3Player.clearPlaylist();
+            mP3Player = mP3Player.add(new URL("http://api.mp3.zing.vn/api/streaming/audio/"+songId+"/128"));
+            mP3Player.play();
         } catch (MalformedURLException ex) {
             Logger.getLogger(MusicService.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
     public void playMusic() {
         System.out.println("Run music");
         mP3Player.play();
@@ -56,6 +68,14 @@ public class MusicService {
     public void pauseMusic() {
         System.out.println("Stop music");
         mP3Player.pause();
+    }
+    public void addToPlaylist(String url)
+    {
+        try {
+            mP3Player.add(new URL(url));
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(MusicService.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public void skipMusic() {
@@ -109,8 +129,8 @@ public class MusicService {
     public void startAt() throws FileNotFoundException, IOException{
         
         InputStream inputStream = null;
-         Object playlistObject;
-         playlistObject = mP3Player.getPlaylist().get(0);
+         Object playlistObject = null;
+       //  playlistObject = mP3Player.getPlaylist().get(0);
          if (playlistObject instanceof File) {
               inputStream = new FileInputStream((File) playlistObject);
          } else if (playlistObject instanceof URL) {

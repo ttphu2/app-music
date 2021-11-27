@@ -15,6 +15,7 @@ public class Model_Popular {
     Icon image;
     String title;
     String description;
+    String songId;
 
     public Icon getImage() {
         return image;
@@ -43,10 +44,19 @@ public class Model_Popular {
     public Model_Popular() {
     }
 
-    public Model_Popular(Icon image, String title, String description) {
+    public Model_Popular(Icon image, String title, String description,String songId) {
         this.image = image;
         this.title = title;
         this.description = description;
+        this.songId = songId;
+    }
+
+    public String getSongId() {
+        return songId;
+    }
+
+    public void setSongId(String songId) {
+        this.songId = songId;
     }
     
 }

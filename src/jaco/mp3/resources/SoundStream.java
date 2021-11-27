@@ -81,10 +81,6 @@ public final class SoundStream implements BitstreamErrors
 	 */
 	private int				framesize;
 
-        public int getFramesize() {
-            return framesize;
-        }
-
 	/**
 	 * The bytes read from the stream.
 	 */

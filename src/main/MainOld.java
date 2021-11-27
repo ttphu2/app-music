@@ -5,7 +5,16 @@
  */
 package main;
 
+import event.EventMenuSelected;
+import form.Form1;
+import form.Form_Artists;
+import jaco.mp3.player.MP3Player;
 import java.awt.Color;
+import java.awt.Component;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.Model_Menu;
 import swing.ScrollBar;
 
@@ -13,27 +22,35 @@ import swing.ScrollBar;
  *
  * @author hocgioinhatlop
  */
-public class Main extends javax.swing.JFrame {
+public class MainOld extends javax.swing.JFrame {
 
-   
-    public Main() {
+    
+    public MainOld() {
         initComponents();
         init();
     }
-    private void init(){
+
+    private void init() {
+        singleton.SingletonMusicService.getMusicServiceInstance().init();
         sp.setVerticalScrollBar(new ScrollBar());
-        setBackground(new Color(0,0,0,0));
-        //init list menu
-        list1.addItem(new Model_Menu("Playlist","playlist"));
-        list1.addItem(new Model_Menu("Artists","artists"));
-        list1.addItem(new Model_Menu("Albums","albums"));
-        list1.addItem(new Model_Menu("Songs","song"));
-        //init list menu2
-        list2.addItem(new Model_Menu("Store","store"));
-        list2.addItem(new Model_Menu("Radio","radio"));
-        list2.addItem(new Model_Menu("For You","love"));
-        list2.addItem(new Model_Menu("Browse","browse"));
+        setBackground(new Color(0, 0, 0, 0));
+//init list menu
+        list1.addItem(new Model_Menu("Playlist", "playlist"));
+        list1.addItem(new Model_Menu("Artists", "artists"));
+        list1.addItem(new Model_Menu("Albums", "albums"));
+        list1.addItem(new Model_Menu("Songs", "song"));
+        
+//init list menu2
+        list2.addItem(new Model_Menu("Store", "store"));
+        list2.addItem(new Model_Menu("Radio", "radio"));
+        list2.addItem(new Model_Menu("For You", "love"));
+        list2.addItem(new Model_Menu("Browse", "browse"));
+        
+     
+       // showForm(new Form_Artists());
+      
     }
+
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -172,11 +189,11 @@ public class Main extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void list1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_list1MousePressed
-       list2.clearSelection();
+        list2.clearSelection();
     }//GEN-LAST:event_list1MousePressed
 
     private void list2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_list2MousePressed
-       list1.clearSelection();
+        list1.clearSelection();
     }//GEN-LAST:event_list2MousePressed
 
     private int x;
@@ -187,7 +204,7 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_panelMovingMousePressed
 
     private void panelMovingMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMovingMouseDragged
-        setLocation(evt.getXOnScreen()-x, evt.getYOnScreen()-y);
+        setLocation(evt.getXOnScreen() - x, evt.getYOnScreen() - y);
     }//GEN-LAST:event_panelMovingMouseDragged
 
     public static void main(String args[]) {
@@ -204,20 +221,21 @@ public class Main extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MainOld.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MainOld.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MainOld.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MainOld.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Main().setVisible(true);
+                new MainOld().setVisible(true);
             }
         });
     }

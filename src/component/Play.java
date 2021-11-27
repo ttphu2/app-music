@@ -121,21 +121,20 @@ public class Play extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton4ActionPerformed
     private boolean playOrPause = true;
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
-      if(playOrPause)
-        SingletonMusicService.getMusicServiceInstance().playMusic();
-      else
+      if(SingletonMusicService.getMusicServiceInstance().isPlaying())
         SingletonMusicService.getMusicServiceInstance().pauseMusic();
-      SingletonMusicService.getMusicServiceInstance().getPosition();
+      else
+        SingletonMusicService.getMusicServiceInstance().playMusic();
       playOrPause = !playOrPause;
     }//GEN-LAST:event_jButton1MouseClicked
 
     private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
-      SingletonMusicService.getMusicServiceInstance().backMusic();
+     SingletonMusicService.getMusicServiceInstance().backMusic();
       
     }//GEN-LAST:event_jButton2MouseClicked
 
     private void jButton3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseClicked
-      SingletonMusicService.getMusicServiceInstance().skipMusic();
+     SingletonMusicService.getMusicServiceInstance().skipMusic();
     }//GEN-LAST:event_jButton3MouseClicked
 
 

@@ -34,7 +34,7 @@ public class Form_Artists extends javax.swing.JPanel {
         List<HomeDataRes> listData = SingletonMusicService.getClientServiceInstance().getHomeData();
         for(HomeDataRes item : listData)
         {
-            mostPopular.addImage(new Model_Popular(new ImageIcon(HashUtil.convertToBufferImage(item.getBanner())), "", ""));
+            mostPopular.addImage(new Model_Popular(new ImageIcon(HashUtil.convertToBufferImage(item.getBanner())), "", "", item.encodeId));
         }
     }
     @SuppressWarnings("unchecked")

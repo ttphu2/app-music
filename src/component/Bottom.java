@@ -29,7 +29,7 @@ public class Bottom extends javax.swing.JPanel {
         initComponents();
         setOpaque(false);
         setBackground(new Color(68, 68, 68));
-        beginTimer();
+     //   beginTimer();
     }
 
     @SuppressWarnings("unchecked")
@@ -46,6 +46,7 @@ public class Bottom extends javax.swing.JPanel {
 
         slider1.setMaximum(262);
         slider1.setValue(0);
+        slider1.setEnabled(false);
 
         lbTimePlaying.setForeground(new java.awt.Color(255, 255, 255));
         lbTimePlaying.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -103,8 +104,6 @@ public class Bottom extends javax.swing.JPanel {
                     .addComponent(jButton3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
-
-        jLabel2.getAccessibleContext().setAccessibleName("04:22");
     }// </editor-fold>//GEN-END:initComponents
     @Override
     protected void paintComponent(Graphics grphcs) {

@@ -13,14 +13,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
-import java.math.BigInteger;
 import java.net.CookieManager;
 import java.net.HttpCookie;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
@@ -41,6 +38,7 @@ public class DataHubService {
     }
     
     //API ZING MP3
+    //tạo param từ hashmap ex: page=1&encodeId=xxxx...
     private String getParamsString(Map<String, String> params) 
       throws UnsupportedEncodingException{
         StringBuilder result = new StringBuilder();
@@ -57,6 +55,7 @@ public class DataHubService {
           ? resultString.substring(0, resultString.length() - 1)
           : resultString;
     }
+    // dùng get json từ url
     private String getDataFromUrl(String urlStr, Map<String, String> params) throws IOException{
 
         urlStr = urlStr + getParamsString(params);
@@ -65,7 +64,8 @@ public class DataHubService {
         URL url = new URL(urlStr);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
-
+        connection.addRequestProperty("Accept-Language", "en-US,en;q=0.8");
+	connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.100 Safari/537.36");
         String cookiesHeader = connection.getHeaderField("Set-Cookie");
         if (cookiesHeader != null && !cookiesHeader.isEmpty()) {
             List<HttpCookie> cookies = HttpCookie.parse(cookiesHeader);
@@ -74,14 +74,16 @@ public class DataHubService {
 
         connection.disconnect();
         connection = (HttpURLConnection) url.openConnection();
-
+       // connection.setRequestProperty("User-Agent", "Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_1 like Mac OS X) AppleWebKit/603.1.30 (KHTML, like Gecko) Version/10.0 Mobile/14E304 Safari/602.1");
         connection.setRequestProperty("Cookie",
                 StringUtils.join(cookieManager.getCookieStore().getCookies(), ";"));
         connection.setRequestProperty("Accept", "*/*");
         connection.setRequestProperty("Content-Type", "application/json;charset=utf-8");
-        connection.setRequestProperty("Accept-Encoding", "gzip");
+        connection.setRequestProperty("Accept-Encoding", "gzip, deflate, br");
         connection.setRequestProperty("Connection", "Keep-Alive");
-        connection.setRequestProperty("Host", "zingmp3.vn");
+       // connection.setRequestProperty("Host", "zingmp3.vn");
+        //folow to end
+        
 //Get Response  
         Reader reader = null;
         if ("gzip".equals(connection.getContentEncoding())) {
@@ -100,10 +102,10 @@ public class DataHubService {
         connection.disconnect();
         return content.toString();
     }
+    // dùng get slider cho dashboard
     public String getHomeData() {
         try {
             String ctime = getCtime();
-            System.out.println();
             Map<String, String> params = new HashMap<>();
             params.put("page", "1");
             params.put("segmentId", "-1");
@@ -112,6 +114,42 @@ public class DataHubService {
             params.put("sig", HashUtil.genarateSignature(ctime, "/api/v2/page/get/home", null,"1"));
             params.put("apiKey", Constants.ZING_API_KEY);
             String content = getDataFromUrl("https://zingmp3.vn/api/v2/page/get/home?",params);
+            return content.toString();
+        } catch (IOException ex) {
+            Logger.getLogger(DataHubService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    // dùng get link stream bằng song id
+    public String getStreamingUrlBySongId(String songId) {
+        try {
+            String ctime = getCtime();
+            System.out.println();
+            Map<String, String> params = new HashMap<>();
+            params.put("id", songId);
+            params.put("ctime", ctime);
+            params.put("version", constant.Constants.ZING_VERSION);
+            params.put("sig",HashUtil.genarateSignature(ctime, "/api/v2/song/get/streaming", songId, null));
+            params.put("apiKey", Constants.ZING_API_KEY);
+            String content = getDataFromUrl("https://zingmp3.vn/api/v2/song/get/streaming?", params);
+            return content.toString();
+        } catch (IOException ex) {
+            Logger.getLogger(DataHubService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    // dùng get data hot song 15 bài hát cho dashboard
+    public String getHubDetail() {
+        try {
+            String ctime = getCtime();
+            System.out.println();
+            Map<String, String> params = new HashMap<>();
+            params.put("id", "IWZ9Z087");
+            params.put("ctime", ctime);
+            params.put("version", Constants.ZING_VERSION);
+            params.put("sig", HashUtil.genarateSignature(ctime, "/api/v2/page/get/hub-detail", "IWZ9Z087",null));
+            params.put("apiKey", Constants.ZING_API_KEY);
+            String content = getDataFromUrl("https://zingmp3.vn/api/v2/page/get/hub-detail?",params);
             System.out.println(content.toString());
             return content.toString();
         } catch (IOException ex) {
@@ -124,6 +162,7 @@ public class DataHubService {
         Timestamp timestamp = new Timestamp(datetime);
         return String.valueOf(Math.round(timestamp.getTime() / 1e3));
     }
+    //dùng để dowload bài hát từ link stream 
     private void downloadUsingStream(String urlStr, String file) throws IOException{
         URL url = new URL(urlStr);
         BufferedInputStream bis = new BufferedInputStream(url.openStream());

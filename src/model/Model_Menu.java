@@ -34,7 +34,6 @@ public class Model_Menu {
         this.icon = icon;
     }
     public Icon toIcon(){
-        System.out.println(getClass().getResource("/icon/" + icon + ".png"));
         return new ImageIcon(getClass().getResource("/icon/" + icon + ".png"));
     }
     public Icon toIconSelected(){
