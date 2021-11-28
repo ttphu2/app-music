@@ -23,9 +23,9 @@ import util.HashUtil;
  *
  * @author hocgioinhatlop
  */
-public class Form_Artists extends javax.swing.JPanel {
+public class Form_Artists1 extends javax.swing.JPanel {
 
-    public Form_Artists() {
+    public Form_Artists1() {
         initComponents();
         init();
     }
@@ -76,7 +76,7 @@ public class Form_Artists extends javax.swing.JPanel {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(10, 10, 10)
+                .addGap(25, 25, 25)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2)
@@ -84,7 +84,7 @@ public class Form_Artists extends javax.swing.JPanel {
                 .addComponent(mostPopular, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(music1, javax.swing.GroupLayout.PREFERRED_SIZE, 566, Short.MAX_VALUE)
+                    .addComponent(music1, javax.swing.GroupLayout.PREFERRED_SIZE, 443, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(profile1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))

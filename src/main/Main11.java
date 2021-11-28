@@ -6,7 +6,11 @@
 package main;
 
 import event.EventMenuSelected;
+import form.Form1;
+import form.Form_Art;
+import form.Form_Artists;
 import java.awt.Color;
+import javax.swing.JComponent;
 import model.Model_Menu;
 import swing.ScrollBar;
 
@@ -14,41 +18,55 @@ import swing.ScrollBar;
  *
  * @author hocgioinhatlop
  */
-public class Main2 extends javax.swing.JFrame {
+public class Main11 extends javax.swing.JFrame {
 
-    
-    public Main2() {
+    private Form_Art form_Artists;
+    private Form1 form1;
+    public Main11() {
         initComponents();
         init();
     }
 
     private void init() {
         singleton.SingletonMusicService.getMusicServiceInstance().init();
-        sp.setVerticalScrollBar(new ScrollBar());
+        form_Artists = new Form_Art();
+        form1 = new Form1();
+       // sp.setVerticalScrollBar(new ScrollBar());
         setBackground(new Color(0, 0, 0, 0));
         //init move frame
-        menu.initMoving(Main2.this);
+        menu.initMoving(Main11.this);
         menu.addEventMenuSelected(new EventMenuSelected() {
             @Override
             public void selected(int index) {
-                System.out.println("Selected index" + index);
+                if(index == 0){
+                    setForm(form_Artists);
+                }else{
+                    setForm(form1);
+                }
             }
         });
+        setForm(form_Artists);
         
         
      
        // showForm(new Form_Artists());
       
     }
-
+    private void setForm(JComponent com)
+    {
+        mainPanel.removeAll();
+        mainPanel.add(com);
+        mainPanel.repaint();
+        mainPanel.revalidate();
+        
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         panel1 = new swing.Panel();
-        sp = new javax.swing.JScrollPane();
-        form_Artists1 = new form.Form_Artists();
+        mainPanel = new javax.swing.JPanel();
         menu = new component.Menu();
         bottom2 = new component.Bottom();
 
@@ -58,39 +76,34 @@ public class Main2 extends javax.swing.JFrame {
         panel1.setBackground(new java.awt.Color(255, 255, 255));
         panel1.setMinimumSize(new java.awt.Dimension(230, 548));
 
-        sp.setBackground(new java.awt.Color(214, 217, 223));
-        sp.setBorder(null);
-        sp.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        sp.setOpaque(false);
-        sp.setViewportView(form_Artists1);
+        mainPanel.setBackground(new java.awt.Color(255, 255, 255));
+        mainPanel.setPreferredSize(new java.awt.Dimension(985, 578));
+        mainPanel.setLayout(new java.awt.BorderLayout());
 
         javax.swing.GroupLayout panel1Layout = new javax.swing.GroupLayout(panel1);
         panel1.setLayout(panel1Layout);
         panel1Layout.setHorizontalGroup(
             panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panel1Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel1Layout.createSequentialGroup()
                 .addComponent(menu, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(sp)
-                .addContainerGap())
+                .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 995, Short.MAX_VALUE))
         );
         panel1Layout.setVerticalGroup(
             panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(sp, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel1Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(menu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(mainPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(menu, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addComponent(bottom2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(panel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -120,13 +133,13 @@ public class Main2 extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Main2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Main11.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Main2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Main11.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Main2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Main11.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Main2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Main11.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
@@ -136,16 +149,15 @@ public class Main2 extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Main2().setVisible(true);
+                new Main11().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private component.Bottom bottom2;
-    private form.Form_Artists form_Artists1;
+    private javax.swing.JPanel mainPanel;
     private component.Menu menu;
     private swing.Panel panel1;
-    private javax.swing.JScrollPane sp;
     // End of variables declaration//GEN-END:variables
 }
