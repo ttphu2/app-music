@@ -9,29 +9,35 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.socket.client.Ack;
 import java.util.ArrayList;
 
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.ImageIcon;
+import javax.swing.JTextArea;
 import model.Model_Music;
-import model.Model_Profile;
 
 import response.HomeDataRes;
 import singleton.SingletonMusicService;
-import util.HashUtil;
 import util.Helper;
 /**
  *
  * @author hocgioinhatlop
  */
-public class ClientService {
+public class ClientService1 {
+    private static ClientService1 instance;
+    public static ClientService1 getInstance() {
+        if (instance == null) {
+            instance = new ClientService1();
+        }
+        return instance;
+    }
     
     public List<HomeDataRes> getHomeData(){
         List<HomeDataRes> result = null;
         try {
-            String json = Service.getInstance().sendMessage("get_homedata");
+            String json = SingletonMusicService.getDataHubServiceInstance().getHomeData();
             ObjectMapper om = new ObjectMapper();
             JsonNode jsonNode = om.readTree(json);
             if(!jsonNode.get("err").asText().equals("0"))
@@ -42,7 +48,7 @@ public class ClientService {
             result = om.convertValue(jsonData, new TypeReference<List<HomeDataRes>>(){});
             
         } catch (JsonProcessingException ex) {
-            Logger.getLogger(ClientService.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ClientService1.class.getName()).log(Level.SEVERE, null, ex);
         }
             return result;
     }
@@ -60,14 +66,14 @@ public class ClientService {
             result = jsonData.asText();
             
         } catch (JsonProcessingException ex) {
-            Logger.getLogger(ClientService.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ClientService1.class.getName()).log(Level.SEVERE, null, ex);
         }
             return result;
     }
     public List<Model_Music> getHotSongInHubDetail(){
         List<Model_Music> listReturn = new ArrayList<>();
         try {
-            String json = Service.getInstance().sendMessage("get_hubdetail");
+            String json = SingletonMusicService.getDataHubServiceInstance().getHubDetail();
             ObjectMapper om = new ObjectMapper();
             JsonNode jsonNode = om.readTree(json);
             if(!jsonNode.get("err").asText().equals("0"))
@@ -84,53 +90,9 @@ public class ClientService {
             } 
             
         } catch (JsonProcessingException ex) {
-            Logger.getLogger(ClientService.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ClientService1.class.getName()).log(Level.SEVERE, null, ex);
         }
             return listReturn;
     }
-    public List<Model_Profile> getHotArtistInHubDetail(){
-        List<Model_Profile> listReturn = new ArrayList<>();
-        try {
-            String json = Service.getInstance().sendMessage("get_hubdetail");
-            ObjectMapper om = new ObjectMapper();
-            JsonNode jsonNode = om.readTree(json);
-            if(!jsonNode.get("err").asText().equals("0"))
-            {
-                return null;
-            }
-            JsonNode jsonData = jsonNode.get("data").get("sections").get(4).get("items");
-
-            for(int i=0;i<4;i++){
-                JsonNode item = jsonData.get(i);
-                listReturn.add(new Model_Profile(item.get("id").asText(),item.get("alias").asText(),item.get("name").asText(),"Có " + item.get("totalFollow").asText() +" followers" ,new ImageIcon(HashUtil.convertToBufferImage(item.get("thumbnailM").asText()))));
-            }
-            
-        } catch (JsonProcessingException ex) {
-            Logger.getLogger(ClientService.class.getName()).log(Level.SEVERE, null, ex);
-        }
-            return listReturn;
-    }
-    public Model_Profile getDetailArtistByAlias(String alias){
-        Model_Profile objReturn = new Model_Profile();
-        try {
-            String json = Service.getInstance().sendMessage("ARTIRST_ALIAS_"+alias);
-            ObjectMapper om = new ObjectMapper();
-            JsonNode jsonNode = om.readTree(json);
-            if(!jsonNode.get("err").asText().equals("0"))
-            {
-                return null;
-            }
-            JsonNode jsonData = jsonNode.get("data");
-            objReturn.setAlias(jsonData.get("alias").asText());
-            objReturn.setName(jsonData.get("name").asText()+" - "+jsonData.get("realname").asText());
-            objReturn.setDescription(jsonData.get("biography").asText());
-            objReturn.setId(jsonData.get("id").asText());
-            objReturn.setImage(new ImageIcon(HashUtil.convertToBufferImage(jsonData.get("thumbnail").asText())));         
-        } catch (JsonProcessingException ex) {
-            Logger.getLogger(ClientService.class.getName()).log(Level.SEVERE, null, ex);
-        }
-            return objReturn;
-    }
-    
    
 }

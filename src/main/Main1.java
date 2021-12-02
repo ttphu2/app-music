@@ -5,9 +5,11 @@
  */
 package main;
 
+import event.EventArtistSelected;
 import event.EventMenuSelected;
 import form.Form1;
 import form.Form_Art;
+import form.Form_ArtistDetail;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Point;
@@ -18,6 +20,8 @@ import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JPopupMenu;
+import service.ClientService;
+import service.Service;
 import swing.DataSearch;
 import swing.EventCallBack;
 import swing.EventClick;
@@ -33,6 +37,7 @@ public class Main1 extends javax.swing.JFrame {
     private JPopupMenu menu1;
     private PanelSearch search;
     private Form_Art form_Artists;
+    private Form_ArtistDetail form_ArtistsDetail;
     private Form1 form1;
     public Main1() {
         initComponents();
@@ -41,8 +46,10 @@ public class Main1 extends javax.swing.JFrame {
 
     private void init() {
         singleton.SingletonMusicService.getMusicServiceInstance().init();
+        Service.getInstance().startConnection();
         form_Artists = new Form_Art();
         form1 = new Form1();
+        form_ArtistsDetail = new Form_ArtistDetail();
        // sp.setVerticalScrollBar(new ScrollBar());
         setBackground(new Color(0, 0, 0, 0));
         //init search panel
@@ -74,16 +81,24 @@ public class Main1 extends javax.swing.JFrame {
         });
         //init move frame
         menu.initMoving(Main1.this);
+        form_Artists.addEventArtistSelected(new EventArtistSelected() {
+            @Override
+            public void selected(int index, String alias) {
+              form_ArtistsDetail.initData(singleton.SingletonMusicService.getClientServiceInstance().getDetailArtistByAlias(alias));
+              setForm(form_ArtistsDetail);
+            }
+        });
         menu.addEventMenuSelected(new EventMenuSelected() {
             @Override
             public void selected(int index) {
                 if(index == 0){
                     setForm(form_Artists);
                 }else{
-                    setForm(form1);
+                    setForm(form_ArtistsDetail);
                 }
             }
         });
+         
         setForm(form_Artists);
         txtSearch.addEvent(new EventTextField() {
             @Override
@@ -220,7 +235,7 @@ public class Main1 extends javax.swing.JFrame {
     private void txtSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtSearchActionPerformed
-    private int canSubmit = 0;
+   
     private void txtSearchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtSearchMouseClicked
       
        if (search.getItemSize() > 0) {
@@ -240,7 +255,6 @@ public class Main1 extends javax.swing.JFrame {
         search.setData(search(text));
         if (search.getItemSize() > 0) {
             //  * 2 top and bot border
-            canSubmit = 1;
             menu1.show(txtSearch, 0, txtSearch.getHeight());
             menu1.setPopupSize(menu1.getWidth(), (search.getItemSize() * 35) + 2);
         } else {

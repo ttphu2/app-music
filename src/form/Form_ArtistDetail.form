@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
+  <Properties>
+    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+      <Color blue="ff" green="ff" red="ff" type="rgb"/>
+    </Property>
+  </Properties>
+  <AuxValues>
+    <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/>
+    <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="1"/>
+    <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
+  </AuxValues>
+
+  <Layout>
+    <DimensionLayout dim="0">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="jScrollPane1" min="-2" pref="586" max="-2" attributes="0"/>
+                  <Component id="txtName" min="-2" pref="576" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace pref="49" max="32767" attributes="0"/>
+              <Component id="imageAvatar" min="-2" pref="260" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="85" max="-2" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+    <DimensionLayout dim="1">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="imageAvatar" min="-2" pref="260" max="-2" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <Component id="txtName" min="-2" pref="35" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="jScrollPane1" min="-2" pref="346" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+              <EmptySpace pref="134" max="32767" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+  </Layout>
+  <SubComponents>
+    <Component class="javax.swing.JLabel" name="txtName">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Tahoma" size="24" style="1"/>
+        </Property>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="50" green="50" red="50" type="rgb"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="B&#xed;ch Ph&#x1b0;&#x1a1;ng"/>
+      </Properties>
+    </Component>
+    <Container class="javax.swing.JScrollPane" name="jScrollPane1">
+      <Properties>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="ff" green="ff" red="ff" type="rgb"/>
+        </Property>
+        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+          <Border info="null"/>
+        </Property>
+        <Property name="horizontalScrollBarPolicy" type="int" value="31"/>
+        <Property name="verticalScrollBarPolicy" type="int" value="21"/>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+      </AuxValues>
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+      <SubComponents>
+        <Component class="javax.swing.JTextArea" name="txtDesc">
+          <Properties>
+            <Property name="editable" type="boolean" value="false"/>
+            <Property name="columns" type="int" value="20"/>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="SansSerif" size="16" style="2"/>
+            </Property>
+            <Property name="lineWrap" type="boolean" value="true"/>
+            <Property name="rows" type="int" value="5"/>
+            <Property name="text" type="java.lang.String" value="B&#xed;ch Ph&#x1b0;&#x1a1;ng l&#xe0; ca s&#x129; tr&#x1b0;&#x1edf;ng th&#xe0;nh t&#x1eeb; cu&#x1ed9;c thi Vi&#x1ec7;t Nam Idol 2010. N&#x103;m 2011, c&#xf4; n&#x1ed5;i l&#xea;n nh&#x1b0; 1 hi&#x1ec7;n t&#x1b0;&#x1ee3;ng v&#x1edb;i h&#xe0;ng lo&#x1ea1;t nh&#x1eef;ng ca kh&#xfa;c Pop Ballad mang giai &#x111;i&#x1ec7;u tr&#x1eef; t&#xec;nh, l&#x1edd;i ca &#x111;i s&#xe2;u v&#xe0;o l&#xf2;ng ng&#x1b0;&#x1edd;i nh&#x1b0;: V&#x1eab;n, C&#xf3; khi n&#xe0;o r&#x1edd;i xa, K&#xed; &#x1ee9;c ng&#x1ee7; qu&#xea;n, v..v.. B&#xed;ch Ph&#x1b0;&#x1a1;ng nhanh ch&#xf3;ng chi&#x1ebf;m &#x111;&#x1b0;&#x1ee3;c t&#xec;nh c&#x1ea3;m c&#x1ee7;a &#x111;&#xf4;ng &#x111;&#x1ea3;o kh&#xe1;n gi&#x1ea3; tr&#x1ebb; nh&#x1edd; gi&#x1ecd;ng h&#xe1;t m&#x1b0;&#x1ee3;t m&#xe0;, s&#xe2;u l&#x1eaf;ng c&#xf9;ng ngo&#x1ea1;i h&#xec;nh xinh &#x111;&#x1eb9;p, n&#x1eef; t&#xed;nh. N&#x1ed1;i ti&#x1ebf;p nh&#x1eef;ng th&#xe0;nh c&#xf4;ng b&#x1b0;&#x1edb;c &#x111;&#x1ea7;u &#x111;&#xf3;, C&#xf4; ti&#x1ebf;p t&#x1ee5;c chinh ph&#x1ee5;c kh&#xe1;n gi&#x1ea3; b&#x1eb1;ng r&#x1ea5;t nhi&#x1ec1;u s&#x1ea3;n ph&#x1ea9;m &#xe2;m nh&#x1ea1;c &#x111;&#x1b0;&#x1ee3;c &#x111;&#x1ea7;u t&#x1b0; ch&#x1ea5;t l&#x1b0;&#x1ee3;ng, Album Vol.1 Ch&#x1ec9; l&#xe0; em gi&#x1ea5;u &#x111;i c&#xf9;ng r&#x1ea5;t nhi&#x1ec1;u nh&#x1eef;ng ca kh&#xfa;c g&#xe2;y s&#xf3;ng gi&#xf3; tr&#xea;n h&#xe0;ng lo&#x1ea1;t c&#xe1;c b&#x1ea3;ng x&#x1ebf;p h&#x1ea1;ng nh&#x1b0; M&#xec;nh Y&#xea;u Nhau &#x110;i v&#xe0; &#x111;em v&#x1ec1; cho B&#xed;ch Ph&#x1b0;&#x1a1;ng nh&#x1eef;ng gi&#x1ea3;i th&#x1b0;&#x1edf;ng &#xe2;m nh&#x1ea1;c uy t&#xed;n. B&#xed;ch Ph&#x1b0;&#x1a1;ng d&#x1ea7;n kh&#x1eb3;ng &#x111;&#x1ecb;nh &#x111;&#x1b0;&#x1ee3;c v&#x1ecb; tr&#xed; v&#x1eef;ng ch&#x1eaf;c c&#x1ee7;a m&#xec;nh trong d&#xf2;ng nh&#x1ea1;c s&#x1edf; tr&#x1b0;&#x1edd;ng Pop Ballad. &#x110;&#x1ea7;u n&#x103;m 2015 &#x111;&#x1ebf;n nay, B&#xed;ch Ph&#x1b0;&#x1a1;ng g&#xe2;y ch&#xfa; &#xfd; b&#x1eb1;ng vi&#x1ec7;c thay &#x111;&#x1ed5;i h&#xec;nh &#x1ea3;nh l&#x1eab;n phong c&#xe1;ch &#xe2;m nh&#x1ea1;c tr&#x1ebb; trung, hi&#x1ec7;n &#x111;&#x1ea1;i h&#x1a1;n v&#x1edb;i RnB, Electro Pop nh&#x1b0; Bao Gi&#x1edd; L&#x1ea5;y Ch&#x1ed3;ng, G&#x1eed;i Anh Xa Nh&#x1edb;, &#x110;&#x1b0;a Em &#x110;i Kh&#x1eaf;p Th&#x1ebf; Gian, N&#xf3;i Th&#x1b0;&#x1a1;ng Nhau Th&#xec; &#x110;&#x1eeb;ng L&#xe0;m Tr&#xe1;i Tim Em &#x110;au..."/>
+            <Property name="wrapStyleWord" type="boolean" value="true"/>
+            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+              <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
+                <EmptyBorder bottom="0" left="0" right="0" top="0"/>
+              </Border>
+            </Property>
+            <Property name="caretColor" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="ff" green="ff" red="ff" type="rgb"/>
+            </Property>
+          </Properties>
+        </Component>
+      </SubComponents>
+    </Container>
+    <Container class="swing.ImageAvatar" name="imageAvatar">
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout">
+        <Property name="useNullLayout" type="boolean" value="true"/>
+      </Layout>
+    </Container>
+  </SubComponents>
+</Form>

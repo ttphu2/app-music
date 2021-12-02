@@ -5,6 +5,7 @@
  */
 package form;
 
+import event.EventArtistSelected;
 import swing.ScrollBar;
 
 /**
@@ -16,6 +17,12 @@ public class Form_Art extends javax.swing.JPanel {
     /**
      * Creates new form Form_Art
      */
+    private EventArtistSelected event;
+    public void addEventArtistSelected(EventArtistSelected event)
+    {
+        this.event = event;
+        form_Artists1.addEventArtistSelected(event);
+    }
     public Form_Art() {
         initComponents();
         sp.setVerticalScrollBar(new ScrollBar());

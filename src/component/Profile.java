@@ -1,24 +1,39 @@
 
 package component;
 
+import event.EventArtistSelected;
+import event.EventMenuSelected;
+import java.util.List;
 import javax.swing.ImageIcon;
 import model.Model_Profile;
+import singleton.SingletonMusicService;
 
 /**
  *
  * @author hocgioinhatlop
  */
 public class Profile extends javax.swing.JPanel {
-
+    private EventArtistSelected event;
+    public void addEventArtistSelected(EventArtistSelected event)
+    {
+        this.event = event;
+        list.addEventArtistSelected(event);
+      //  list2.addEventMenuSelected(event);
+    }
     public Profile() {
         initComponents();
         init();
     }
     private void init()
     {
-        list.addItem(new Model_Profile("Avicii", "Tim", new ImageIcon(getClass().getResource("/icon/test/avicii_pro.jpg"))));
-        list.addItem(new Model_Profile("Kygo", "Kygo", new ImageIcon(getClass().getResource("/icon/test/kygo_pro.jpg"))));
-        list.addItem(new Model_Profile("Sigala", "Sigala", new ImageIcon(getClass().getResource("/icon/test/sigala_pro.jpg"))));
+        List<Model_Profile> listData = SingletonMusicService.getClientServiceInstance().getHotArtistInHubDetail();
+        for(Model_Profile item : listData)
+        {
+            list.addItem(item);
+        }
+//        list.addItem(new Model_Profile("Avicii", "Tim", new ImageIcon(getClass().getResource("/icon/test/avicii_pro.jpg"))));
+//        list.addItem(new Model_Profile("Kygo", "Kygo", new ImageIcon(getClass().getResource("/icon/test/kygo_pro.jpg"))));
+//        list.addItem(new Model_Profile("Sigala", "Sigala", new ImageIcon(getClass().getResource("/icon/test/sigala_pro.jpg"))));
         
     }
     @SuppressWarnings("unchecked")
@@ -32,7 +47,7 @@ public class Profile extends javax.swing.JPanel {
 
         jLabel1.setFont(new java.awt.Font("SansSerif", 0, 20)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel1.setText("Listen this weekend");
+        jLabel1.setText("Hot artists this weekend");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);

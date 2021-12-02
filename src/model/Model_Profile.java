@@ -12,6 +12,8 @@ import javax.swing.Icon;
  * @author hocgioinhatlop
  */
 public class Model_Profile {
+    String id;
+    String alias;
     String name;
     String description;
     Icon image;
@@ -19,10 +21,29 @@ public class Model_Profile {
     public Model_Profile() {
     }
 
-    public Model_Profile(String name, String description, Icon image) {
+    public Model_Profile(String id,String alias,String name, String description, Icon image) {
         this.name = name;
         this.description = description;
         this.image = image;
+        this.id = id;
+        this.alias = alias;
+    }
+
+    public String getAlias() {
+        return alias;
+    }
+
+    public void setAlias(String alias) {
+        this.alias = alias;
+    }
+
+    
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
     
 

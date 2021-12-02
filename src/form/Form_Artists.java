@@ -5,6 +5,7 @@
  */
 package form;
 
+import event.EventArtistSelected;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -24,10 +25,15 @@ import util.HashUtil;
  * @author hocgioinhatlop
  */
 public class Form_Artists extends javax.swing.JPanel {
-
+ private EventArtistSelected event;
+    public void addEventArtistSelected(EventArtistSelected event)
+    {
+        this.event = event;
+        profile1.addEventArtistSelected(event);
+    }
     public Form_Artists() {
         initComponents();
-        init();
+        init();     
     }
 
     public void init(){
