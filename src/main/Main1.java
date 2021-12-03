@@ -6,10 +6,13 @@
 package main;
 
 import event.EventArtistSelected;
+import event.EventBackForm;
 import event.EventMenuSelected;
+import event.EventShowLyric;
 import form.Form1;
 import form.Form_Art;
 import form.Form_ArtistDetail;
+import form.Form_ShowLyric;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Point;
@@ -38,7 +41,9 @@ public class Main1 extends javax.swing.JFrame {
     private PanelSearch search;
     private Form_Art form_Artists;
     private Form_ArtistDetail form_ArtistsDetail;
+    private Form_ShowLyric form_showLyric;
     private Form1 form1;
+    private JComponent oldForm;
     public Main1() {
         initComponents();
         init();
@@ -50,6 +55,7 @@ public class Main1 extends javax.swing.JFrame {
         form_Artists = new Form_Art();
         form1 = new Form1();
         form_ArtistsDetail = new Form_ArtistDetail();
+        form_showLyric = new Form_ShowLyric();
        // sp.setVerticalScrollBar(new ScrollBar());
         setBackground(new Color(0, 0, 0, 0));
         //init search panel
@@ -88,17 +94,40 @@ public class Main1 extends javax.swing.JFrame {
               setForm(form_ArtistsDetail);
             }
         });
+        form_ArtistsDetail.addEventBackFormSelected(new EventBackForm() {
+            @Override
+            public void backForm() {
+              setForm(oldForm);
+            }
+        });
+        form_showLyric.addEventBackFormSelected(new EventBackForm() {
+            @Override
+            public void backForm() {
+              setForm(oldForm);
+            }
+        });
+        bottom2.addEventShowLyric(new EventShowLyric() {
+            @Override
+            public void showLyric() {
+               if(singleton.SingletonMusicService.getMusicServiceInstance().getCurrentSong() != null)
+               {
+                    form_showLyric.initData(singleton.SingletonMusicService.getMusicServiceInstance().getCurrentSong().getSongId());
+                    setForm(form_showLyric);
+               } 
+            }
+        });
         menu.addEventMenuSelected(new EventMenuSelected() {
             @Override
             public void selected(int index) {
                 if(index == 0){
+                    oldForm = form_Artists;
                     setForm(form_Artists);
                 }else{
                     setForm(form_ArtistsDetail);
                 }
             }
         });
-         
+        oldForm = form_Artists;
         setForm(form_Artists);
         txtSearch.addEvent(new EventTextField() {
             @Override
@@ -129,14 +158,16 @@ public class Main1 extends javax.swing.JFrame {
        // showForm(new Form_Artists());
       
     }
+  
     private void setForm(JComponent com)
-    {
+    { 
         mainPanel.removeAll();
         mainPanel.add(com);
         mainPanel.repaint();
         mainPanel.revalidate();
         
     }
+
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents

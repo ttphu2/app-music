@@ -86,6 +86,9 @@ public class MP3Player extends JPanel {
     public List<Object> getPlaylist() {
         return playlist;
     }
+    public int getPlayingIndex() {
+        return playingIndex;
+    }
 
     public void setPlaylist(List<Object> playlist) {
         this.playlist = playlist;

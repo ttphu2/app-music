@@ -1,6 +1,7 @@
 
 package component;
 
+import javax.swing.ImageIcon;
 import service.MusicService;
 import singleton.SingletonMusicService;
 
@@ -119,13 +120,18 @@ public class Play extends javax.swing.JPanel {
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton4ActionPerformed
-    private boolean playOrPause = true;
+   
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
-      if(SingletonMusicService.getMusicServiceInstance().isPlaying())
+      if(SingletonMusicService.getMusicServiceInstance().isPlaying()){
         SingletonMusicService.getMusicServiceInstance().pauseMusic();
-      else
-        SingletonMusicService.getMusicServiceInstance().playMusic();
-      playOrPause = !playOrPause;
+        jButton1.setIcon(new ImageIcon(getClass().getResource("/icon/pause.jpg")));
+      }       
+      else{
+          SingletonMusicService.getMusicServiceInstance().playMusic();
+          jButton1.setIcon(new ImageIcon(getClass().getResource("/icon/play.jpg")));
+      }
+        
+       
     }//GEN-LAST:event_jButton1MouseClicked
 
     private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked

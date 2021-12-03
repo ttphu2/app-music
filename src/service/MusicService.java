@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.sound.sampled.AudioSystem;
@@ -20,6 +21,7 @@ import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.Line;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.Mixer;
+import model.Model_Music;
 
 /**
  *
@@ -28,6 +30,9 @@ import javax.sound.sampled.Mixer;
 public class MusicService {
 
     public static MP3Player mP3Player;
+    public static List<Model_Music> myPlaylist;
+    public static boolean playPlaylist = false;
+    public static Model_Music mySong;
    // private static List<String> playList = 
     //http://api.mp3.zing.vn/api/streaming/audio/ZUC7DBEC/128
     public MusicService() {    
@@ -45,12 +50,20 @@ public class MusicService {
 //            Logger.getLogger(MusicService.class.getName()).log(Level.SEVERE, null, ex);
 //        }
     }
+    public Model_Music getCurrentSong(){
+        if(playPlaylist == false)
+        {
+            return mySong;
+        }
+          return myPlaylist.get(mP3Player.getPlayingIndex());  
+    }
     public void playNew(String songId) {
         try {
             mP3Player.stop();
             mP3Player = mP3Player.clearPlaylist();
             mP3Player = mP3Player.add(new URL("http://api.mp3.zing.vn/api/streaming/audio/"+songId+"/128"));
             mP3Player.play();
+            mySong = singleton.SingletonMusicService.getClientServiceInstance().getInfoSongById(songId);
         } catch (MalformedURLException ex) {
             Logger.getLogger(MusicService.class.getName()).log(Level.SEVERE, null, ex);
         }

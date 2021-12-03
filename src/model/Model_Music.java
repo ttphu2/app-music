@@ -14,7 +14,28 @@ public class Model_Music {
     String name;
     String time;
     int duration;
-    String songId;
+    String songId;//encodeId
+    String artistsNames;
+    String lyric;
+
+    public String getLyric() {
+        return lyric;
+    }
+
+    public void setLyric(String lyric) {
+        this.lyric = lyric;
+    }
+    
+    
+
+    public String getArtistsNames() {
+        return artistsNames;
+    }
+
+    public void setArtistsNames(String artistsNames) {
+        this.artistsNames = artistsNames;
+    }
+    
 
     public int getDuration() {
         return duration;
@@ -43,12 +64,13 @@ public class Model_Music {
         this.time = time;
     }
 
-    public Model_Music(String no, String name, String time, int duration, String songId) {
+    public Model_Music(String no, String name, String time, int duration, String songId, String artistsNames) {
         this.no = no;
         this.name = name;
         this.time = time;
         this.duration = duration;
         this.songId = songId;
+        this.artistsNames = artistsNames;
     }
 
     public String getNo() {

@@ -79,7 +79,7 @@ public class ClientService {
             int no=1;
             for(JsonNode item : jsonData)
             {
-                listReturn.add(new Model_Music(Integer.toString(no),item.get("title").asText(),Helper.formatSecondToMusicTime(item.get("duration").asInt()),item.get("duration").asInt(),item.get("encodeId").asText()));  
+                listReturn.add(new Model_Music(Integer.toString(no),item.get("title").asText(),Helper.formatSecondToMusicTime(item.get("duration").asInt()),item.get("duration").asInt(),item.get("encodeId").asText(),item.get("artistsNames").asText()));  
                 no++;
             } 
             
@@ -100,7 +100,7 @@ public class ClientService {
             }
             JsonNode jsonData = jsonNode.get("data").get("sections").get(4).get("items");
 
-            for(int i=0;i<4;i++){
+            for(int i=0;i<6;i++){
                 JsonNode item = jsonData.get(i);
                 listReturn.add(new Model_Profile(item.get("id").asText(),item.get("alias").asText(),item.get("name").asText(),"Có " + item.get("totalFollow").asText() +" followers" ,new ImageIcon(HashUtil.convertToBufferImage(item.get("thumbnailM").asText()))));
             }
@@ -126,6 +126,40 @@ public class ClientService {
             objReturn.setDescription(jsonData.get("biography").asText());
             objReturn.setId(jsonData.get("id").asText());
             objReturn.setImage(new ImageIcon(HashUtil.convertToBufferImage(jsonData.get("thumbnail").asText())));         
+        } catch (JsonProcessingException ex) {
+            Logger.getLogger(ClientService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            return objReturn;
+    }
+    public String getLyricBySongId(String songId){
+        String objReturn = "";
+        try {
+            String json = Service.getInstance().sendMessage("LYRIC_ID_"+songId);
+            ObjectMapper om = new ObjectMapper();
+            JsonNode jsonNode = om.readTree(json);
+            if(!jsonNode.get("err").asText().equals("0"))
+            {
+                return null;
+            }
+            JsonNode jsonData = jsonNode.get("data").get(0);
+            objReturn = jsonData.get("content").asText();
+        } catch (JsonProcessingException ex) {
+            Logger.getLogger(ClientService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            return objReturn;
+    }
+    public Model_Music getInfoSongById(String songId){
+        Model_Music objReturn = null;
+        try {
+            String json = Service.getInstance().sendMessage("INFO_SONG_"+songId);
+            ObjectMapper om = new ObjectMapper();
+            JsonNode jsonNode = om.readTree(json);
+            if(!jsonNode.get("err").asText().equals("0"))
+            {
+                return null;
+            }
+            JsonNode item = jsonNode.get("data");
+            objReturn = new Model_Music("1",item.get("title").asText(),Helper.formatSecondToMusicTime(item.get("duration").asInt()),item.get("duration").asInt(),item.get("encodeId").asText(),item.get("artistsNames").asText());
         } catch (JsonProcessingException ex) {
             Logger.getLogger(ClientService.class.getName()).log(Level.SEVERE, null, ex);
         }
