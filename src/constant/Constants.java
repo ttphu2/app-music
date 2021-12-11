@@ -16,5 +16,6 @@ public class Constants {
     public static final String ZING_VERSION = "1.4.12";
     public static final String ZING_API_KEY = "88265e23d4284f25963e6eedac8fbfa3";
     public static final String HMAC_SHA512 = "HmacSHA512";
+
     
 }

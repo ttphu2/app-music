@@ -9,38 +9,38 @@ import singleton.SingletonMusicService;
  *
  * @author hocgioinhatlop
  */
-public class Music extends javax.swing.JPanel {
+public class Music_Artist extends javax.swing.JPanel {
 
-    public Music() {
+    public Music_Artist() {
         initComponents();
-        init();
+      //  init();
     }
-    private void init()
+    public void init(List<Model_Music> items)
     {
-//        List<Model_Music> listMusic  = SingletonMusicService.getClientServiceInstance().getHotSongInHubDetail();
-//        if(listMusic != null && listMusic.size() > 0)
-//        {
-//            for(Model_Music item : listMusic)
-//            {
-//                item.setName(item.getName()+" - "+item.getArtistsNames());
-//                list.addItem(item);
-//            }           
-//        }
+        list.clearData();
+        if(items != null && items.size() > 0)
+        {
+            for(Model_Music item : items)
+            {
+                item.setName(item.getName()+" - "+item.getArtistsNames());
+                list.addItem(item);
+            }           
+        }
         
-        list.addItem(new Model_Music("2", "Heaven", "04:37"));
-        list.addItem(new Model_Music("3", "SOS (feat. Aloe Blacc)", "02:37"));
-        list.addItem(new Model_Music("4", "Bad Reputation (feat. Joe Janiak)", "03:25"));
-        list.addItem(new Model_Music("5", "Ain't A Thing", "03:03"));
-        list.addItem(new Model_Music("6", "Hold The line (feat. A R I Z O N A)", "02:51"));
-        list.addItem(new Model_Music("7", "Freak (feat. Bonn)", "02:59"));
-        list.addItem(new Model_Music("8", "Excuse me Mr Sir (feat. Vargas & Lagola)", "03:07"));
-        list.addItem(new Model_Music("9", "Heart Upon My Sleeve (feat. Imagine Dragons)", "04:14"));
-        list.addItem(new Model_Music("10", "Never Leave Me (feat. Joe Janiak)", "02:51"));
-        list.addItem(new Model_Music("11", "Fades Away (feat. Noonie Bao)", "02:58"));
-        list.addItem(new Model_Music("12", "Wake Me Up", "04:07"));
-        list.addItem(new Model_Music("13", "You Make Me", "03:53"));
-        list.addItem(new Model_Music("14", "Hey Brother", "04:15"));
-        list.addItem(new Model_Music("15", "Addicted To You", "02:28"));;
+//        list.addItem(new Model_Music("2", "Heaven", "04:37"));
+//        list.addItem(new Model_Music("3", "SOS (feat. Aloe Blacc)", "02:37"));
+//        list.addItem(new Model_Music("4", "Bad Reputation (feat. Joe Janiak)", "03:25"));
+//        list.addItem(new Model_Music("5", "Ain't A Thing", "03:03"));
+//        list.addItem(new Model_Music("6", "Hold The line (feat. A R I Z O N A)", "02:51"));
+//        list.addItem(new Model_Music("7", "Freak (feat. Bonn)", "02:59"));
+//        list.addItem(new Model_Music("8", "Excuse me Mr Sir (feat. Vargas & Lagola)", "03:07"));
+//        list.addItem(new Model_Music("9", "Heart Upon My Sleeve (feat. Imagine Dragons)", "04:14"));
+//        list.addItem(new Model_Music("10", "Never Leave Me (feat. Joe Janiak)", "02:51"));
+//        list.addItem(new Model_Music("11", "Fades Away (feat. Noonie Bao)", "02:58"));
+//        list.addItem(new Model_Music("12", "Wake Me Up", "04:07"));
+//        list.addItem(new Model_Music("13", "You Make Me", "03:53"));
+//        list.addItem(new Model_Music("14", "Hey Brother", "04:15"));
+//        list.addItem(new Model_Music("15", "Addicted To You", "02:28"));;
         
     }
     @SuppressWarnings("unchecked")
@@ -54,7 +54,7 @@ public class Music extends javax.swing.JPanel {
 
         jLabel1.setFont(new java.awt.Font("SansSerif", 0, 20)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel1.setText("Most Trending Music");
+        jLabel1.setText("Bài hát nổi bật");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);

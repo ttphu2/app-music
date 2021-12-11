@@ -31,6 +31,7 @@ public class ListMusic<E extends Object> extends JList<E>{
                if(SwingUtilities.isLeftMouseButton(me)){
                    playIndex = locationToIndex(me.getPoint());
                    Model_Music item = (Model_Music) model.get(playIndex);
+                   if(playIndex != -1)
                    SingletonMusicService.getMusicServiceInstance().playNew(item.getSongId());
                    repaint();
                }
@@ -60,6 +61,9 @@ public class ListMusic<E extends Object> extends JList<E>{
     }
     public void addItem(Model_Music data){
         model.addElement(data);
+    }
+     public void clearData(){
+        model.removeAllElements();
     }
     
 }

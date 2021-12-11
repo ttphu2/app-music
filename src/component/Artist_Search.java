@@ -5,6 +5,7 @@ import event.EventArtistSelected;
 import event.EventMenuSelected;
 import java.util.List;
 import javax.swing.ImageIcon;
+import model.Model_Music;
 import model.Model_Profile;
 import singleton.SingletonMusicService;
 
@@ -12,7 +13,7 @@ import singleton.SingletonMusicService;
  *
  * @author hocgioinhatlop
  */
-public class Profile extends javax.swing.JPanel {
+public class Artist_Search extends javax.swing.JPanel {
     private EventArtistSelected event;
     public void addEventArtistSelected(EventArtistSelected event)
     {
@@ -20,18 +21,40 @@ public class Profile extends javax.swing.JPanel {
         list.addEventArtistSelected(event);
       //  list2.addEventMenuSelected(event);
     }
-    public Profile() {
+    public Artist_Search() {
         initComponents();
-        init();
+        //init();
     }
-    private void init()
+    public void init(List<Model_Profile> listProfile)
     {
-        List<Model_Profile> listData = SingletonMusicService.getClientServiceInstance().getHotArtistInHubDetail();
-        for(Model_Profile item : listData)
+        if(listProfile != null && listProfile.size() > 0)
         {
-            list.addItem(item);
+            list.clearData();
+            for(Model_Profile item : listProfile)
+            {
+                list.addItem(item);
+            }           
         }
+//        list.addItem(new Model_Profile("Avicii", "Tim","","", new ImageIcon(getClass().getResource("/icon/test/avicii_pro.jpg")),"","",""));
+//        list.addItem(new Model_Profile("Avicii", "Tim","","", new ImageIcon(getClass().getResource("/icon/test/avicii_pro.jpg")),"","",""));
+//        list.addItem(new Model_Profile("Avicii", "Tim","","", new ImageIcon(getClass().getResource("/icon/test/avicii_pro.jpg")),"","",""));
+//        list.addItem(new Model_Profile("Avicii", "Tim","","", new ImageIcon(getClass().getResource("/icon/test/avicii_pro.jpg")),"","",""));
+//        list.addItem(new Model_Profile("Avicii", "Tim","","", new ImageIcon(getClass().getResource("/icon/test/avicii_pro.jpg")),"","",""));
+//        list.addItem(new Model_Profile("Avicii", "Tim","","", new ImageIcon(getClass().getResource("/icon/test/avicii_pro.jpg")),"","",""));
        
+    }
+    public void loadMore(List<Model_Profile> listProfile)
+    {
+//        List<Model_Music> listMusic  = SingletonMusicService.getClientServiceInstance().getHotSongInHubDetail();
+        if(listProfile != null && listProfile.size() > 0)
+        {
+            for(Model_Profile item : listProfile)
+            {
+                list.addItem(item);
+            }           
+        }
+        
+
     }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -44,7 +67,7 @@ public class Profile extends javax.swing.JPanel {
 
         jLabel1.setFont(new java.awt.Font("SansSerif", 0, 20)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel1.setText("Hot artists this weekend");
+        jLabel1.setText("Top results");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);

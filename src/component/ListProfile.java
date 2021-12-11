@@ -58,7 +58,7 @@ public class ListProfile<E extends Object> extends JList<E> {
                 if (o instanceof Model_Profile) {
                     data = (Model_Profile) o;
                 } else {
-                    data = new Model_Profile("0","none","Name", "Description", new ImageIcon(getClass().getResource("/icon/artists_selected.png")));
+                    data = new Model_Profile("0","none","Name", "Description", new ImageIcon(getClass().getResource("/icon/artists_selected.png")),"","","");
                 }
                 ItemProfile item = new ItemProfile(data);
                 return item;
@@ -68,5 +68,8 @@ public class ListProfile<E extends Object> extends JList<E> {
 
     public void addItem(Model_Profile data) {
         model.addElement(data);
+    }
+     public void clearData(){
+        model.removeAllElements();
     }
 }

@@ -132,17 +132,12 @@ public class Bottom extends javax.swing.JPanel {
     
 
 //    public void startTimer() {
-//        int count=0;
+//       int count=0;
 //        final Timer t = new Timer(1000, new ActionListener() {
-//                @Override
-//                public void actionPerformed(java.awt.event.ActionEvent e) {
-//                    slider1.setValue(slider1.getValue() + 1);
-//                    System.out.println(slider1.getValue());
-//                    System.out.println(count);
-//                    if (slider1.getValue() == 200) {
-//                      ((Timer) e.getSource()).stop();
-//                    }
-//                }
+//               @Override
+//               public void actionPerformed(java.awt.event.ActionEvent e) {
+//                   
+//               }
 //            });
 //            t.start();
 //    }

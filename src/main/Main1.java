@@ -7,12 +7,15 @@ package main;
 
 import event.EventArtistSelected;
 import event.EventBackForm;
+import event.EventClickBtn;
 import event.EventMenuSelected;
 import event.EventShowLyric;
 import form.Form1;
 import form.Form_Art;
 import form.Form_ArtistDetail;
+import form.Form_ArtistResult;
 import form.Form_ShowLyric;
+import form.Form_SongResult;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Point;
@@ -20,9 +23,14 @@ import java.awt.event.MouseAdapter;
 import java.awt.geom.Ellipse2D;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
+import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
+import model.Model_SearchResult;
+import org.apache.commons.lang3.StringUtils;
 import service.ClientService;
 import service.Service;
 import swing.DataSearch;
@@ -36,14 +44,21 @@ import swing.PanelSearch;
  * @author hocgioinhatlop
  */
 public class Main1 extends javax.swing.JFrame {
+
     private boolean mouseFlag = true; // dùng để chặn event mouse clicked show popup khi ấn submit search
+    List<String> dataStory = new ArrayList<>();
     private JPopupMenu menu1;
     private PanelSearch search;
     private Form_Art form_Artists;
     private Form_ArtistDetail form_ArtistsDetail;
+    private Form_SongResult form_SongResult;
+    private Form_ArtistResult form_artistResult;
     private Form_ShowLyric form_showLyric;
     private Form1 form1;
     private JComponent oldForm;
+    private Timer timer; // timer dung de tao event doi. user nhap input xong
+    private TimerTask task;// task dung de tao event doi. user nhap input xong
+
     public Main1() {
         initComponents();
         init();
@@ -56,21 +71,23 @@ public class Main1 extends javax.swing.JFrame {
         form1 = new Form1();
         form_ArtistsDetail = new Form_ArtistDetail();
         form_showLyric = new Form_ShowLyric();
-       // sp.setVerticalScrollBar(new ScrollBar());
+        form_SongResult = new Form_SongResult();
+        // sp.setVerticalScrollBar(new ScrollBar());
         setBackground(new Color(0, 0, 0, 0));
         //init search panel
         menu1 = new JPopupMenu();
         search = new PanelSearch();
-        
+
         menu1.setBorder(BorderFactory.createLineBorder(new Color(164, 164, 164)));
         menu1.add(search);
         menu1.setFocusable(false);
         search.addEventClick(new EventClick() {
             @Override
             public void itemClick(DataSearch data) {
-                
+
                 menu1.setVisible(false);
-                txtSearch.setText(data.getText());    
+                txtSearch.setText(data.getText());
+                dataStory.add(data.getText());
                 System.out.println("Click Item : " + data.getText());
             }
 
@@ -90,39 +107,38 @@ public class Main1 extends javax.swing.JFrame {
         form_Artists.addEventArtistSelected(new EventArtistSelected() {
             @Override
             public void selected(int index, String alias) {
-              form_ArtistsDetail.initData(singleton.SingletonMusicService.getClientServiceInstance().getDetailArtistByAlias(alias));
-              setForm(form_ArtistsDetail);
+                form_ArtistsDetail.initData(singleton.SingletonMusicService.getClientServiceInstance().getDetailArtistByAlias(alias));
+                setForm(form_ArtistsDetail);
             }
         });
         form_ArtistsDetail.addEventBackFormSelected(new EventBackForm() {
             @Override
             public void backForm() {
-              setForm(oldForm);
+                setForm(oldForm);
             }
         });
         form_showLyric.addEventBackFormSelected(new EventBackForm() {
             @Override
             public void backForm() {
-              setForm(oldForm);
+                setForm(oldForm);
             }
         });
         bottom2.addEventShowLyric(new EventShowLyric() {
             @Override
             public void showLyric() {
-               if(singleton.SingletonMusicService.getMusicServiceInstance().getCurrentSong() != null)
-               {
+                if (singleton.SingletonMusicService.getMusicServiceInstance().getCurrentSong() != null) {
                     form_showLyric.initData(singleton.SingletonMusicService.getMusicServiceInstance().getCurrentSong().getSongId());
                     setForm(form_showLyric);
-               } 
+                }
             }
         });
         menu.addEventMenuSelected(new EventMenuSelected() {
             @Override
             public void selected(int index) {
-                if(index == 0){
+                if (index == 0) {
                     oldForm = form_Artists;
                     setForm(form_Artists);
-                }else{
+                } else {
                     setForm(form_ArtistsDetail);
                 }
             }
@@ -135,12 +151,34 @@ public class Main1 extends javax.swing.JFrame {
                 //  Test
                 menu1.setVisible(false);
                 System.out.println(txtSearch.getText());
+
+                if (StringUtils.isBlank(txtSearch.getText())) {
+                    JOptionPane.showMessageDialog(null, "Vui lòng không để trống thanh tim kiếm hoặc nhập khoảng trống",
+                            "Có lỗi xảy ra", JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+                form_SongResult = new Form_SongResult();
+                form_SongResult.initData(txtSearch.getText());
                 try {
                     for (int i = 1; i <= 100; i++) {
                         Thread.sleep(10);
                     }
-                menu1.setVisible(false);   
-                mouseFlag = true;
+                    setForm(form_SongResult);
+
+                    form_artistResult.initData(txtSearch.getText());
+                    form_SongResult.addEventClickBtn(new EventClickBtn() {
+                        @Override
+                        public void clicked() {
+                            setForm(form_artistResult);
+                        }
+                    });
+                    form_artistResult.addEventClickBtn(new EventClickBtn() {
+                        @Override
+                        public void clicked() {
+                            setForm(form_SongResult);
+                        }
+                    });
+
                     call.done();
                 } catch (Exception e) {
                     System.err.println(e);
@@ -152,22 +190,28 @@ public class Main1 extends javax.swing.JFrame {
 
             }
         });
-        
-        
-     
-       // showForm(new Form_Artists());
-      
+        form_artistResult = new Form_ArtistResult();
+        form_artistResult.addEventArtistSelected(new EventArtistSelected() {
+            @Override
+            public void selected(int index, String alias) {
+                form_ArtistsDetail.initData(singleton.SingletonMusicService.getClientServiceInstance().getDetailArtistByAlias(alias));
+                oldForm = form_artistResult;
+                setForm(form_ArtistsDetail);
+            }
+        });
+        //event run function after stop typing
+        timer = new Timer();
+
+        // showForm(new Form_Artists());
     }
-  
-    private void setForm(JComponent com)
-    { 
+
+    private void setForm(JComponent com) {
         mainPanel.removeAll();
         mainPanel.add(com);
         mainPanel.repaint();
         mainPanel.revalidate();
-        
-    }
 
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -266,35 +310,29 @@ public class Main1 extends javax.swing.JFrame {
     private void txtSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtSearchActionPerformed
-   
+
     private void txtSearchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtSearchMouseClicked
-      
-       if (search.getItemSize() > 0) {
-           menu1.setVisible(false);
-          menu1.show(txtSearch, 0, txtSearch.getHeight());
-           
-       }
-       if(checkMouseOver(evt.getPoint())){
-          menu1.setVisible(false);
-          
-      }
-        
+
+        if (search.getItemSize() > 0) {
+            menu1.setVisible(false);
+            menu1.show(txtSearch, 0, txtSearch.getHeight());
+
+        }
+        if (checkMouseOver(evt.getPoint())) {
+            menu1.setVisible(false);
+
+        }
+
     }//GEN-LAST:event_txtSearchMouseClicked
 
     private void txtSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchKeyReleased
-     String text = txtSearch.getText().trim().toLowerCase();
-        search.setData(search(text));
-        if (search.getItemSize() > 0) {
-            //  * 2 top and bot border
-            menu1.show(txtSearch, 0, txtSearch.getHeight());
-            menu1.setPopupSize(menu1.getWidth(), (search.getItemSize() * 35) + 2);
-        } else {
-            menu1.setVisible(false);
-        }
+        timer.cancel();
+        beginTimer();
     }//GEN-LAST:event_txtSearchKeyReleased
 
     private int x;
     private int y;
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -327,52 +365,36 @@ public class Main1 extends javax.swing.JFrame {
             }
         });
     }
-private List<DataSearch> search(String search) {
-        int limitData = 7;
+
+    private List<DataSearch> search(String search) {
+        int limitData = 4;
         List<DataSearch> list = new ArrayList<>();
-        String dataTesting[] = {"300 - Rise of an Empire",
-            "Cosmic Sin",
-            "Deadlock",
-            "Deliver Us from Eva",
-            "Empire of the Ants",
-            "Empire of the Sun",
-            "Empire Records",
-            "Empire State",
-            "Four Good Days",
-            "Frozen Fever",
-            "Frozen",
-            "The Courier",
-            "The First Purge",
-            "To Olivia",
-            "Underworld"};
+
+        String dataTesting[] = singleton.SingletonMusicService.getClientServiceInstance().getKeywordByQuery(search);
+        if (dataTesting == null) {
+            return list;
+        }
         for (String d : dataTesting) {
-            if (d.toLowerCase().contains(search)) {
-                boolean story = isStory(d);
-                if (story) {
-                    list.add(0, new DataSearch(d, story));
-                    //  add or insert to first record
-                } else {
-                    list.add(new DataSearch(d, story));
-                    //  add to last record
-                }
-                if (list.size() == limitData) {
-                    break;
-                }
+            boolean story = isStory(d);
+            if (story) {
+                list.add(0, new DataSearch(d, story));
+                //  add or insert to first record
+            } else {
+                list.add(new DataSearch(d, false));
+                //  add to last record
+            }
+            if (list.size() == limitData) {
+                break;
             }
         }
         return list;
     }
-    String dataStory[] = {"300 - Rise of an Empire",
-        "Empire Records",
-        "Empire State",
-        "Frozen",
-        "The Courier"};
 
     private void removeHistory(String text) {
-        for (int i = 0; i < dataStory.length; i++) {
-            String d = dataStory[i];
+        for (int i = 0; i < dataStory.size(); i++) {
+            String d = dataStory.get(i);
             if (d.toLowerCase().equals(text.toLowerCase())) {
-                dataStory[i] = "";
+                dataStory.remove(i);
             }
         }
     }
@@ -385,6 +407,34 @@ private List<DataSearch> search(String search) {
         }
         return false;
     }
+
+    public void beginTimer() {
+
+        timer = new Timer();
+
+        task = new TimerTask() {
+
+            public void run() {
+                loadSearch();
+                timer.cancel();
+            }
+        };
+
+        timer.scheduleAtFixedRate(task, 800, 1000);
+    }
+
+    public void loadSearch() {
+        String text = txtSearch.getText().trim().toLowerCase();
+        search.setData(search(text));
+        if (search.getItemSize() > 0) {
+            //  * 2 top and bot border
+            menu1.show(txtSearch, 0, txtSearch.getHeight());
+            menu1.setPopupSize(menu1.getWidth(), (search.getItemSize() * 35) + 2);
+        } else {
+            menu1.setVisible(false);
+        }
+    }
+
     private boolean checkMouseOver(Point mouse) {
         int width = txtSearch.getWidth();
         int height = txtSearch.getHeight();

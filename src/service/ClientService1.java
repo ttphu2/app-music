@@ -85,7 +85,7 @@ public class ClientService1 {
             int no=1;
             for(JsonNode item : jsonData)
             {
-                listReturn.add(new Model_Music(Integer.toString(no),item.get("title").asText(),Helper.formatSecondToMusicTime(item.get("duration").asInt()),item.get("duration").asInt(),item.get("encodeId").asText()));  
+//                listReturn.add(new Model_Music(Integer.toString(no),item.get("title").asText(),Helper.formatSecondToMusicTime(item.get("duration").asInt()),item.get("duration").asInt(),item.get("encodeId").asText()));  
                 no++;
             } 
             

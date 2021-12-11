@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import model.Model_Music;
 import model.Model_Profile;
+import model.Model_SearchResult;
 
 import response.HomeDataRes;
 import singleton.SingletonMusicService;
@@ -72,7 +73,7 @@ public class ClientService {
             JsonNode jsonNode = om.readTree(json);
             if(!jsonNode.get("err").asText().equals("0"))
             {
-                return null;
+                return listReturn;
             }
             JsonNode jsonData = jsonNode.get("data").get("sections").get(1).get("items");
             
@@ -96,13 +97,16 @@ public class ClientService {
             JsonNode jsonNode = om.readTree(json);
             if(!jsonNode.get("err").asText().equals("0"))
             {
-                return null;
+                return listReturn;
             }
             JsonNode jsonData = jsonNode.get("data").get("sections").get(4).get("items");
 
             for(int i=0;i<6;i++){
                 JsonNode item = jsonData.get(i);
-                listReturn.add(new Model_Profile(item.get("id").asText(),item.get("alias").asText(),item.get("name").asText(),"Có " + item.get("totalFollow").asText() +" followers" ,new ImageIcon(HashUtil.convertToBufferImage(item.get("thumbnailM").asText()))));
+                listReturn.add(new Model_Profile(item.get("id").asText(),item.get("alias").asText()
+                        ,item.get("name").asText(),"Có " + item.get("totalFollow").asText() +" followers" 
+                        ,new ImageIcon(HashUtil.convertToBufferImage(item.get("thumbnailM").asText()))
+                        ,"","",""));
             }
             
         } catch (JsonProcessingException ex) {
@@ -122,10 +126,28 @@ public class ClientService {
             }
             JsonNode jsonData = jsonNode.get("data");
             objReturn.setAlias(jsonData.get("alias").asText());
-            objReturn.setName(jsonData.get("name").asText()+" - "+jsonData.get("realname").asText());
+            objReturn.setName(jsonData.get("name").asText());
             objReturn.setDescription(jsonData.get("biography").asText());
             objReturn.setId(jsonData.get("id").asText());
-            objReturn.setImage(new ImageIcon(HashUtil.convertToBufferImage(jsonData.get("thumbnail").asText())));         
+            objReturn.setBirthday(jsonData.get("birthday").asText());
+            objReturn.setRealName(jsonData.get("realname").asText());
+            objReturn.setNational(jsonData.get("national").asText());
+            objReturn.setImage(new ImageIcon(HashUtil.convertToBufferImage(jsonData.get("thumbnail").asText())));
+            if(jsonNode.get("data").get("sections") == null) return objReturn;
+            JsonNode root = jsonNode.get("data").get("sections").get(0);
+            if(root.get("sectionType").asText().equals("song"))
+            {
+                List<Model_Music> album = new ArrayList<>();
+                int no=1;
+                for(int i=0;i<root.get("items").size();i++)
+                {
+                   JsonNode item = root.get("items").get(i);
+                   album.add(new Model_Music(Integer.toString(i+1),item.get("title").asText(),Helper.formatSecondToMusicTime(item.get("duration").asInt()),item.get("duration").asInt(),item.get("encodeId").asText(),item.get("artistsNames").asText()));   
+                }
+                objReturn.setAlbum(album);
+            }
+            
+            
         } catch (JsonProcessingException ex) {
             Logger.getLogger(ClientService.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -160,6 +182,88 @@ public class ClientService {
             }
             JsonNode item = jsonNode.get("data");
             objReturn = new Model_Music("1",item.get("title").asText(),Helper.formatSecondToMusicTime(item.get("duration").asInt()),item.get("duration").asInt(),item.get("encodeId").asText(),item.get("artistsNames").asText());
+        } catch (JsonProcessingException ex) {
+            Logger.getLogger(ClientService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            return objReturn;
+    }
+    public String[] getKeywordByQuery(String query){
+        String[] result = null;
+        try {
+            String json = Service.getInstance().sendMessage("GET_KEYWORD_"+query);
+            ObjectMapper om = new ObjectMapper();
+            JsonNode jsonNode = om.readTree(json);
+            if(!jsonNode.get("err").asText().equals("0"))
+            {
+                return null;
+            }
+            JsonNode root = jsonNode.get("data").get("items");
+            if(root.size() > 0){
+                result = new String[root.get(0).get("keywords").size()];
+                int index = 0;
+                for(JsonNode item : root.get(0).get("keywords"))
+                {
+                    result[index] = item.get("keyword").asText();
+                    index++;
+                }
+            }        
+            
+            
+        } catch (JsonProcessingException ex) {
+            Logger.getLogger(ClientService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            return result;
+    }
+    public Model_SearchResult getSearchResultByQuery(String query,String type, int page,int count){
+        Model_SearchResult objReturn = new Model_SearchResult();
+        try {
+            String json = Service.getInstance().sendMessage("SEARCH_QUERY_"+type+"_"+page+"_"+count+"_"+query);
+            ObjectMapper om = new ObjectMapper();
+            JsonNode jsonNode = om.readTree(json);
+            if(!jsonNode.get("err").asText().equals("0"))
+            {
+                return null;
+            }
+            
+            JsonNode root = jsonNode.get("data");
+            if(root.isEmpty()) return null;
+            if(type.toLowerCase().equals("song"))
+            {
+                int total = root.get("total").asInt();
+                if(total == 0) return null;
+                List<Model_Music> musics = new ArrayList<>();
+                JsonNode items= root.get("items");
+                int no=count*(page-1)+1;
+                for(int i=0;i < items.size();i++)
+                {
+                    JsonNode item = items.get(i);
+                    musics.add(new Model_Music(Integer.toString(no),item.get("title").asText(),Helper.formatSecondToMusicTime(item.get("duration").asInt()),item.get("duration").asInt(),item.get("encodeId").asText(),item.get("artistsNames").asText())); 
+                    no++;
+                }
+                objReturn.setSongs(musics);
+                objReturn.setCounterSong(total);
+                
+            }else{
+                
+                int total = root.get("total")!=null ? root.get("total").asInt() : 0;
+                if(total == 0) return null;
+                List<Model_Profile> artists = new ArrayList<>();
+                JsonNode items= root.get("items");
+                for(int i=0;i<items.size();i++)
+                {
+                    JsonNode item = items.get(i);
+                    artists.add(new Model_Profile(item.get("id").asText(),item.get("alias").asText()
+                        ,item.get("name").asText(),"Có " + (item.get("totalFollow")==null ?  "0": item.get("totalFollow").asText()) +" followers" 
+                        ,new ImageIcon(HashUtil.convertToBufferImage(item.get("thumbnailM").asText()))
+                        ,"","",""));
+                }
+                objReturn.setArtists(artists);
+                objReturn.setCounterArtist(total);
+            }
+            
+
+        
+            
         } catch (JsonProcessingException ex) {
             Logger.getLogger(ClientService.class.getName()).log(Level.SEVERE, null, ex);
         }
