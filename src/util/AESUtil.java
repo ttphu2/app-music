@@ -19,6 +19,10 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import org.apache.commons.lang3.RandomStringUtils;
+import singleton.SingletonMusicService;
+import static util.RSAUtil.encrypt;
+import static util.RSAUtil.privateKey;
+import static util.RSAUtil.publicKey;
 
 /**
  *
@@ -26,7 +30,7 @@ import org.apache.commons.lang3.RandomStringUtils;
  */
 public class AESUtil {
 
-    private static String key;
+    public static String key;
     private static String initVector="encryptionIntVec";
     private static AESUtil instance;
 
@@ -35,7 +39,7 @@ public class AESUtil {
        
     }
     public static void init(){
-        key=RandomStringUtils.randomAlphanumeric(16);
+        key=SingletonMusicService.getClientServiceInstance().getSecretKey();
     }
     public static String encrypt(String value) {
         try {
@@ -73,7 +77,12 @@ public class AESUtil {
     }
     public static void main(String[] args) throws IllegalBlockSizeException, InvalidKeyException, NoSuchPaddingException, BadPaddingException, NoSuchAlgorithmException {
         init();
-        String originalString = "password";
+        String cipherText = Base64.getEncoder().encodeToString(RSAUtil.encrypt(key, RSAUtil.publicKey));
+        System.out.println("Key decrypt" + cipherText + "send to server");
+        String secretKey = RSAUtil.decrypt(cipherText, RSAUtil.privateKey);
+        System.out.println("sk"+secretKey);
+        
+        String originalString = "message";
 	System.out.println("Original String to encrypt - " + originalString);
 	String encryptedString = encrypt(originalString);
 	System.out.println("Encrypted String - " + encryptedString);

@@ -9,11 +9,16 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import javax.swing.ImageIcon;
 import model.Model_Music;
 import model.Model_Profile;
@@ -21,8 +26,10 @@ import model.Model_SearchResult;
 
 import response.HomeDataRes;
 import singleton.SingletonMusicService;
+import util.AESUtil;
 import util.HashUtil;
 import util.Helper;
+import util.RSAUtil;
 /**
  *
  * @author hocgioinhatlop
@@ -32,7 +39,7 @@ public class ClientService {
     public List<HomeDataRes> getHomeData(){
         List<HomeDataRes> result = null;
         try {
-            String json = Service.getInstance().sendMessage("get_homedata");
+            String json = AESUtil.decrypt(Service.getInstance().sendMessage("get_homedata"));
             ObjectMapper om = new ObjectMapper();
             JsonNode jsonNode = om.readTree(json);
             if(!jsonNode.get("err").asText().equals("0"))
@@ -50,7 +57,8 @@ public class ClientService {
     public String getSongUrl128KBPS(String songId){
         String result = null;
         try {
-            String json = SingletonMusicService.getDataHubServiceInstance().getStreamingUrlBySongId(songId);
+            
+            String json = AESUtil.decrypt(SingletonMusicService.getDataHubServiceInstance().getStreamingUrlBySongId(songId));
             ObjectMapper om = new ObjectMapper();
             JsonNode jsonNode = om.readTree(json);
             if(!jsonNode.get("err").asText().equals("0"))
@@ -68,7 +76,7 @@ public class ClientService {
     public List<Model_Music> getHotSongInHubDetail(){
         List<Model_Music> listReturn = new ArrayList<>();
         try {
-            String json = Service.getInstance().sendMessage("get_hubdetail");
+            String json = AESUtil.decrypt(Service.getInstance().sendMessage("get_hubdetail"));
             ObjectMapper om = new ObjectMapper();
             JsonNode jsonNode = om.readTree(json);
             if(!jsonNode.get("err").asText().equals("0"))
@@ -92,7 +100,7 @@ public class ClientService {
     public List<Model_Profile> getHotArtistInHubDetail(){
         List<Model_Profile> listReturn = new ArrayList<>();
         try {
-            String json = Service.getInstance().sendMessage("get_hubdetail");
+            String json = AESUtil.decrypt(Service.getInstance().sendMessage("get_hubdetail"));
             ObjectMapper om = new ObjectMapper();
             JsonNode jsonNode = om.readTree(json);
             if(!jsonNode.get("err").asText().equals("0"))
@@ -117,7 +125,7 @@ public class ClientService {
     public Model_Profile getDetailArtistByAlias(String alias){
         Model_Profile objReturn = new Model_Profile();
         try {
-            String json = Service.getInstance().sendMessage("ARTIRST_ALIAS_"+alias);
+            String json = AESUtil.decrypt(Service.getInstance().sendMessage("ARTIRST_ALIAS_"+alias));
             ObjectMapper om = new ObjectMapper();
             JsonNode jsonNode = om.readTree(json);
             if(!jsonNode.get("err").asText().equals("0"))
@@ -156,13 +164,14 @@ public class ClientService {
     public String getLyricBySongId(String songId){
         String objReturn = "";
         try {
-            String json = Service.getInstance().sendMessage("LYRIC_ID_"+songId);
+            String json = AESUtil.decrypt(Service.getInstance().sendMessage("LYRIC_ID_"+songId));
             ObjectMapper om = new ObjectMapper();
             JsonNode jsonNode = om.readTree(json);
             if(!jsonNode.get("err").asText().equals("0"))
             {
                 return null;
             }
+            if(jsonNode.get("data") == null) return "Lyrics của bài hát này chưa được cập nhật";
             JsonNode jsonData = jsonNode.get("data").get(0);
             objReturn = jsonData.get("content").asText();
         } catch (JsonProcessingException ex) {
@@ -173,7 +182,7 @@ public class ClientService {
     public Model_Music getInfoSongById(String songId){
         Model_Music objReturn = null;
         try {
-            String json = Service.getInstance().sendMessage("INFO_SONG_"+songId);
+            String json = AESUtil.decrypt(Service.getInstance().sendMessage("INFO_SONG_"+songId));
             ObjectMapper om = new ObjectMapper();
             JsonNode jsonNode = om.readTree(json);
             if(!jsonNode.get("err").asText().equals("0"))
@@ -190,7 +199,7 @@ public class ClientService {
     public String[] getKeywordByQuery(String query){
         String[] result = null;
         try {
-            String json = Service.getInstance().sendMessage("GET_KEYWORD_"+query);
+            String json = AESUtil.decrypt(Service.getInstance().sendMessage("GET_KEYWORD_"+query));
             ObjectMapper om = new ObjectMapper();
             JsonNode jsonNode = om.readTree(json);
             if(!jsonNode.get("err").asText().equals("0"))
@@ -217,7 +226,7 @@ public class ClientService {
     public Model_SearchResult getSearchResultByQuery(String query,String type, int page,int count){
         Model_SearchResult objReturn = new Model_SearchResult();
         try {
-            String json = Service.getInstance().sendMessage("SEARCH_QUERY_"+type+"_"+page+"_"+count+"_"+query);
+            String json = AESUtil.decrypt(Service.getInstance().sendMessage("SEARCH_QUERY_"+type+"_"+page+"_"+count+"_"+query));
             ObjectMapper om = new ObjectMapper();
             JsonNode jsonNode = om.readTree(json);
             if(!jsonNode.get("err").asText().equals("0"))
@@ -246,7 +255,7 @@ public class ClientService {
             }else{
                 
                 int total = root.get("total")!=null ? root.get("total").asInt() : 0;
-                if(total == 0) return null;
+                if(total == 0 || root.get("items") == null) return null;
                 List<Model_Profile> artists = new ArrayList<>();
                 JsonNode items= root.get("items");
                 for(int i=0;i<items.size();i++)
@@ -269,6 +278,27 @@ public class ClientService {
         }
             return objReturn;
     }
-    
+    public String getSecretKey()
+    {
+        try {
+            String key_encrypted = Service.getInstance().sendMessage("SECRETKEY");
+        
+            String secretKey = !key_encrypted.equals("") ? RSAUtil.decrypt(key_encrypted, RSAUtil.privateKey) : "";
+            System.out.println("Sk="+secretKey);
+            return secretKey;
+            
+        } catch (IllegalBlockSizeException ex) {
+            Logger.getLogger(ClientService.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InvalidKeyException ex) {
+            Logger.getLogger(ClientService.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (BadPaddingException ex) {
+            Logger.getLogger(ClientService.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(ClientService.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoSuchPaddingException ex) {
+            Logger.getLogger(ClientService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return "";
+    }
    
 }

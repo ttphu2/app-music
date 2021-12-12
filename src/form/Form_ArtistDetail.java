@@ -56,9 +56,9 @@ public class Form_ArtistDetail extends javax.swing.JPanel {
     public void initData(Model_Profile data) {
         
         txtBirthday.setText("Ngày sinh: "+data.getBirthday());
-        txtName.setText(data.getName()+" - "+data.getNational());
+        txtName.setText(data.getName()+(!data.getNational().equals("") ? " - "+data.getNational():""));
         txtRName.setText("Tên thật: "+data.getRealName());
-        txtDesc.setText(data.getDescription().replaceAll("<br>", ""));
+        txtDesc.setText(!data.getDescription().equals("") ? data.getDescription().replaceAll("<br>", ""):"Không có thông tin");
         music_Artist1.init(data.getAlbum());
         
         sp.getVerticalScrollBar().setValue(0);

@@ -8,6 +8,7 @@ package main;
 import event.EventArtistSelected;
 import event.EventBackForm;
 import event.EventClickBtn;
+import event.EventLoadMusic;
 import event.EventMenuSelected;
 import event.EventShowLyric;
 import form.Form1;
@@ -18,6 +19,7 @@ import form.Form_ShowLyric;
 import form.Form_SongResult;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.geom.Ellipse2D;
@@ -29,6 +31,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
+import javax.swing.JSlider;
 import model.Model_SearchResult;
 import org.apache.commons.lang3.StringUtils;
 import service.ClientService;
@@ -38,6 +41,7 @@ import swing.EventCallBack;
 import swing.EventClick;
 import swing.EventTextField;
 import swing.PanelSearch;
+import util.AESUtil;
 
 /**
  *
@@ -66,7 +70,9 @@ public class Main1 extends javax.swing.JFrame {
 
     private void init() {
         singleton.SingletonMusicService.getMusicServiceInstance().init();
+        
         Service.getInstance().startConnection();
+        AESUtil.init();
         form_Artists = new Form_Art();
         form1 = new Form1();
         form_ArtistsDetail = new Form_ArtistDetail();
@@ -143,6 +149,7 @@ public class Main1 extends javax.swing.JFrame {
                 }
             }
         });
+
         oldForm = form_Artists;
         setForm(form_Artists);
         txtSearch.addEvent(new EventTextField() {
@@ -157,29 +164,17 @@ public class Main1 extends javax.swing.JFrame {
                             "Có lỗi xảy ra", JOptionPane.WARNING_MESSAGE);
                     return;
                 }
-                form_SongResult = new Form_SongResult();
+                
                 form_SongResult.initData(txtSearch.getText());
+                oldForm = form_SongResult;
                 try {
                     for (int i = 1; i <= 100; i++) {
                         Thread.sleep(10);
                     }
+                    
                     setForm(form_SongResult);
-
-                    form_artistResult.initData(txtSearch.getText());
-                    form_SongResult.addEventClickBtn(new EventClickBtn() {
-                        @Override
-                        public void clicked() {
-                            setForm(form_artistResult);
-                        }
-                    });
-                    form_artistResult.addEventClickBtn(new EventClickBtn() {
-                        @Override
-                        public void clicked() {
-                            setForm(form_SongResult);
-                        }
-                    });
-
                     call.done();
+                    
                 } catch (Exception e) {
                     System.err.println(e);
                 }
@@ -201,7 +196,32 @@ public class Main1 extends javax.swing.JFrame {
         });
         //event run function after stop typing
         timer = new Timer();
-
+        //event click music change time
+        form_Artists.addEventLoadMuisc(new EventLoadMusic() {
+            @Override
+            public void loadMusic() {
+                bottom2.initMusic();
+            }
+        });
+        form_SongResult.addEventLoadMusic(new EventLoadMusic() {
+            @Override
+            public void loadMusic() {
+                bottom2.initMusic();
+            }
+        });
+        form_SongResult.addEventClickBtn(new EventClickBtn() {
+            @Override
+            public void clicked() {
+                form_artistResult.initData(txtSearch.getText());
+                setForm(form_artistResult);
+            }
+        });
+        form_artistResult.addEventClickBtn(new EventClickBtn() {
+            @Override
+            public void clicked() {
+                setForm(form_SongResult);
+            }
+        });
         // showForm(new Form_Artists());
     }
 

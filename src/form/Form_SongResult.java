@@ -1,16 +1,14 @@
 package form;
 
+import component.Music_Search;
 import component.Profile;
 import event.EventClickBtn;
+import event.EventLoadMusic;
 import java.awt.Cursor;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.List;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import model.Model_Music;
 import model.Model_Profile;
 import model.Model_SearchResult;
 import swing.ScrollBar;
@@ -22,6 +20,10 @@ public class Form_SongResult extends javax.swing.JPanel {
     private int page =1;
     public void addEventClickBtn(EventClickBtn event) {
         this.event = event;
+    }
+    private EventLoadMusic event1;
+    public void addEventLoadMusic(EventLoadMusic event) {
+        this.event1 = event;   
     }
 
     public Form_SongResult() {
@@ -63,13 +65,20 @@ public class Form_SongResult extends javax.swing.JPanel {
     }
 
     public void initData(String query) {
+        page=1;
+        sp1.getVerticalScrollBar().setValue(0);
+        this.query = query;
         Model_SearchResult result = singleton.SingletonMusicService.getClientServiceInstance().getSearchResultByQuery(query, "song",1, 18);
         
         if(result != null)
         {
            // music_Search1.setVisible(true);
+            
+            music_Search1.repaint();
             music_Search1.init(result.getSongs());
-            this.query = query;
+            
+            if(event1 != null)
+            music_Search1.addEventLoadMusic(event1);
             txtNumberResult.setText("Có "+result.getCounterSong()+" kết quả được tìm thấy");
         }else{
             music_Search1.setVisible(false);

@@ -1,6 +1,7 @@
 
 package component;
 
+import event.EventLoadMusic;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -16,7 +17,12 @@ public class MostPopular extends javax.swing.JLayeredPane {
     public MostPopular() {
         initComponents();
     }
+    private EventLoadMusic event;
 
+    public void addEventLoadMusic(EventLoadMusic event) {
+        this.event = event;
+        //mostPopular.addEventArtistSelected(event);
+    }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

@@ -1,6 +1,7 @@
 
 package component;
 
+import event.EventLoadMusic;
 import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -21,6 +22,11 @@ import singleton.SingletonMusicService;
 public class ListMusic<E extends Object> extends JList<E>{
     private final DefaultListModel model;
     private int playIndex = -1;
+    private EventLoadMusic event;
+
+    public void addEventLoadMusic(EventLoadMusic event) {
+        this.event = event;
+    }
     public ListMusic() {
         model = new DefaultListModel();
         setModel(model);
@@ -33,6 +39,8 @@ public class ListMusic<E extends Object> extends JList<E>{
                    Model_Music item = (Model_Music) model.get(playIndex);
                    if(playIndex != -1)
                    SingletonMusicService.getMusicServiceInstance().playNew(item.getSongId());
+                   if(event != null)
+                   event.loadMusic();
                    repaint();
                }
             }

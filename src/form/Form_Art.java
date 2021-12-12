@@ -6,6 +6,7 @@
 package form;
 
 import event.EventArtistSelected;
+import event.EventLoadMusic;
 import swing.ScrollBar;
 
 /**
@@ -17,11 +18,16 @@ public class Form_Art extends javax.swing.JPanel {
     /**
      * Creates new form Form_Art
      */
+    private EventLoadMusic event1;
     private EventArtistSelected event;
     public void addEventArtistSelected(EventArtistSelected event)
     {
         this.event = event;
         form_Artists1.addEventArtistSelected(event);
+    }
+    public void addEventLoadMuisc(EventLoadMusic event) {
+        this.event1 = event;
+        form_Artists1.addEventLoadMusic(event1);
     }
     public Form_Art() {
         initComponents();

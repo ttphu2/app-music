@@ -6,14 +6,8 @@
 package form;
 
 import event.EventArtistSelected;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
+import event.EventLoadMusic;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import model.Model_Popular;
 import response.HomeDataRes;
@@ -25,24 +19,32 @@ import util.HashUtil;
  * @author hocgioinhatlop
  */
 public class Form_Artists extends javax.swing.JPanel {
- private EventArtistSelected event;
-    public void addEventArtistSelected(EventArtistSelected event)
-    {
+
+    private EventArtistSelected event;
+    private EventLoadMusic event1;
+
+    public void addEventLoadMusic(EventLoadMusic event) {
+        this.event1 = event;
+        music1.addEventLoadMusic(event);
+    }
+
+    public void addEventArtistSelected(EventArtistSelected event) {
         this.event = event;
         profile1.addEventArtistSelected(event);
     }
+
     public Form_Artists() {
         initComponents();
-        init();     
+        init();
     }
 
-    public void init(){
+    public void init() {
         List<HomeDataRes> listData = SingletonMusicService.getClientServiceInstance().getHomeData();
-        for(HomeDataRes item : listData)
-        {
+        for (HomeDataRes item : listData) {
             mostPopular.addImage(new Model_Popular(new ImageIcon(HashUtil.convertToBufferImage(item.getBanner())), "", "", item.encodeId));
         }
     }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -97,7 +99,7 @@ public class Form_Artists extends javax.swing.JPanel {
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
-    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;

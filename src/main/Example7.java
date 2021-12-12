@@ -20,6 +20,7 @@ import org.jsoup.select.Elements;
 import response.ApiResponses;
 import response.HomeDataRes;
 import service.DataHubService;
+import service.MusicService;
 import util.HashUtil;
 
 public class Example7 {
@@ -45,6 +46,9 @@ public class Example7 {
 //    String response2 = service.Service.getInstance().sendMessage("con cac du ma 2");
 //    System.out.println(response2);
 //      service.Service.getInstance().stopConnection();
+    service.Service.getInstance().startConnection();
+      singleton.SingletonMusicService.getClientServiceInstance().getSecretKey();
+      
   }
 public static final String formatTime(long secs) {
     return String.format("%02d:%02d", (secs % 3600) / 60, secs % 60);

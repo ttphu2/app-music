@@ -63,6 +63,7 @@ public class MusicService {
             mP3Player = mP3Player.clearPlaylist();
             mP3Player = mP3Player.add(new URL("http://api.mp3.zing.vn/api/streaming/audio/"+songId+"/128"));
             mP3Player.play();
+            playPlaylist = false;
             mySong = singleton.SingletonMusicService.getClientServiceInstance().getInfoSongById(songId);
         } catch (MalformedURLException ex) {
             Logger.getLogger(MusicService.class.getName()).log(Level.SEVERE, null, ex);
@@ -119,6 +120,10 @@ public class MusicService {
        
        return mP3Player.isRepeat();
     }
+    public void setRepeat(boolean repeat) {
+       
+       mP3Player.setRepeat(repeat);
+    }
     public long getPosition() {
        if(isPlaying()) return mP3Player.getPosition();
        return 0;
@@ -154,6 +159,12 @@ public class MusicService {
       
     }
 
+    public void setVolume(int value)
+    {
+        System.out.println("Volume "+ value);
+        mP3Player.setVolume(value);
+ 
+    }
     public void volumeDownControl(Double value) {
         Mixer.Info[] mixers = AudioSystem.getMixerInfo();
         for (Mixer.Info mixerInfo : mixers) {
