@@ -11,6 +11,7 @@ import event.EventClickBtn;
 import event.EventLoadMusic;
 import event.EventMenuSelected;
 import event.EventShowLyric;
+import event.EventShowLyricWithId;
 import form.Form1;
 import form.Form_Art;
 import form.Form_ArtistDetail;
@@ -27,6 +28,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
@@ -62,6 +65,7 @@ public class Main1 extends javax.swing.JFrame {
     private JComponent oldForm;
     private Timer timer; // timer dung de tao event doi. user nhap input xong
     private TimerTask task;// task dung de tao event doi. user nhap input xong
+    private Executor executor;
 
     public Main1() {
         initComponents();
@@ -73,6 +77,7 @@ public class Main1 extends javax.swing.JFrame {
         
         Service.getInstance().startConnection();
         AESUtil.init();
+        executor = Executors.newSingleThreadExecutor();
         form_Artists = new Form_Art();
         form1 = new Form1();
         form_ArtistsDetail = new Form_ArtistDetail();
@@ -129,6 +134,8 @@ public class Main1 extends javax.swing.JFrame {
                 setForm(oldForm);
             }
         });
+        
+        //add event show Lyric
         bottom2.addEventShowLyric(new EventShowLyric() {
             @Override
             public void showLyric() {
@@ -138,6 +145,32 @@ public class Main1 extends javax.swing.JFrame {
                 }
             }
         });
+        form_Artists.addEventShowLyricWithId(new EventShowLyricWithId() {
+            @Override
+            public void showLyric(String songId) {
+               form_showLyric.initData(songId);
+               setForm(form_showLyric);
+            }
+        });
+        form_SongResult.addEventShowLyricWithId(new EventShowLyricWithId() {
+            @Override
+            public void showLyric(String songId) {
+                
+               form_showLyric.initData(songId);
+               oldForm=form_SongResult;
+               setForm(form_showLyric);
+            }
+        });
+        form_ArtistsDetail.addEventShowLyricWithId(new EventShowLyricWithId() {
+            @Override
+            public void showLyric(String songId) {
+               
+               form_showLyric.initData(songId);
+               oldForm=form_ArtistsDetail;
+               setForm(form_showLyric);
+            }
+        });
+       //event click menu change form
         menu.addEventMenuSelected(new EventMenuSelected() {
             @Override
             public void selected(int index) {
@@ -164,17 +197,18 @@ public class Main1 extends javax.swing.JFrame {
                             "Có lỗi xảy ra", JOptionPane.WARNING_MESSAGE);
                     return;
                 }
+               
                 
-                form_SongResult.initData(txtSearch.getText());
+               
                 oldForm = form_SongResult;
                 try {
                     for (int i = 1; i <= 100; i++) {
                         Thread.sleep(10);
-                    }
-                    
-                    setForm(form_SongResult);
+                    }  
                     call.done();
-                    
+                    form_SongResult.initData(txtSearch.getText());
+                    setForm(form_SongResult);
+                    executor.execute(() -> form_artistResult.initData(txtSearch.getText()));   
                 } catch (Exception e) {
                     System.err.println(e);
                 }
@@ -212,7 +246,6 @@ public class Main1 extends javax.swing.JFrame {
         form_SongResult.addEventClickBtn(new EventClickBtn() {
             @Override
             public void clicked() {
-                form_artistResult.initData(txtSearch.getText());
                 setForm(form_artistResult);
             }
         });

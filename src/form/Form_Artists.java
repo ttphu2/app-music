@@ -7,6 +7,7 @@ package form;
 
 import event.EventArtistSelected;
 import event.EventLoadMusic;
+import event.EventShowLyricWithId;
 import java.util.List;
 import javax.swing.ImageIcon;
 import model.Model_Popular;
@@ -27,10 +28,17 @@ public class Form_Artists extends javax.swing.JPanel {
         this.event1 = event;
         music1.addEventLoadMusic(event);
     }
+    
 
     public void addEventArtistSelected(EventArtistSelected event) {
         this.event = event;
         profile1.addEventArtistSelected(event);
+    }
+    private EventShowLyricWithId eventShowLyric;
+
+    public void addEventShowLyricWithId(EventShowLyricWithId event) {
+        this.eventShowLyric = event;
+        music1.addEventShowLyricWithId(event);
     }
 
     public Form_Artists() {

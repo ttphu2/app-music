@@ -2,6 +2,7 @@
 package component;
 
 import event.EventLoadMusic;
+import event.EventShowLyricWithId;
 import java.util.List;
 import model.Model_Music;
 import singleton.SingletonMusicService;
@@ -21,6 +22,12 @@ public class Music extends javax.swing.JPanel {
     public void addEventLoadMusic(EventLoadMusic event) {
         this.event = event;
         list.addEventLoadMusic(event);
+    }
+    private EventShowLyricWithId eventShowLyric;
+
+    public void addEventShowLyricWithId(EventShowLyricWithId event) {
+        this.eventShowLyric = event;
+        list.addEventShowLyricWithId(event);
     }
     private void init()
     {

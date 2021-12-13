@@ -71,7 +71,10 @@ public class Form_ArtistResult extends javax.swing.JPanel {
         {
             page=1;
             sp1.getVerticalScrollBar().setValue(0);
+            artist_Search2.setVisible(false);
+            if(result.getArtists() != null)
             artist_Search2.init(result.getArtists());
+            artist_Search2.setVisible(true);
             this.query = query;
             txtNumberResult.setText("Có "+result.getCounterArtist()+" kết quả được tìm thấy");
         }else{

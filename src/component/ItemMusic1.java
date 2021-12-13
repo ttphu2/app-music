@@ -4,17 +4,19 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.RenderingHints;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.geom.Ellipse2D;
 import javax.swing.ImageIcon;
 import model.Model_Music;
-import singleton.SingletonMusicService;
 
-public class ItemMusic extends javax.swing.JPanel {
+public class ItemMusic1 extends javax.swing.JPanel {
 
     private final Model_Music data;
     private boolean play = false;
-    private ImageIcon icon_addsong = new ImageIcon(getClass().getResource("/icon/addsong.png"));
-    private ImageIcon icon_addsong_selected = new ImageIcon(getClass().getResource("/icon/addsong_selected.png"));
+
     public void setPlay(boolean play) {
         this.play = play;
         if (play) {
@@ -35,11 +37,8 @@ public class ItemMusic extends javax.swing.JPanel {
             lbTime.setForeground(new Color(51, 51, 51));
         }
     }
-    public void setIconAddSongSelected(){
-      
-           jLabel1.setIcon(icon_addsong_selected);
-    }
-    public ItemMusic(Model_Music data) {
+
+    public ItemMusic1(Model_Music data) {
         this.data = data;
         initComponents();
         setOpaque(false);
@@ -56,7 +55,6 @@ public class ItemMusic extends javax.swing.JPanel {
         lbText = new javax.swing.JLabel();
         lbTime = new javax.swing.JLabel();
         lbShowLyric = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
 
         lbIcon.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
@@ -71,8 +69,6 @@ public class ItemMusic extends javax.swing.JPanel {
 
         lbShowLyric.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/lyric.png"))); // NOI18N
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/addsong.png"))); // NOI18N
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -83,9 +79,7 @@ public class ItemMusic extends javax.swing.JPanel {
                 .addGap(15, 15, 15)
                 .addComponent(lbText)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lbTime, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel1)
+                .addComponent(lbTime, javax.swing.GroupLayout.DEFAULT_SIZE, 53, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lbShowLyric))
         );
@@ -95,7 +89,6 @@ public class ItemMusic extends javax.swing.JPanel {
             .addComponent(lbTime, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(lbText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(lbShowLyric, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -111,7 +104,6 @@ public class ItemMusic extends javax.swing.JPanel {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel lbIcon;
     private javax.swing.JLabel lbShowLyric;
     private javax.swing.JLabel lbText;

@@ -4,6 +4,7 @@ import component.Music_Search;
 import component.Profile;
 import event.EventClickBtn;
 import event.EventLoadMusic;
+import event.EventShowLyricWithId;
 import java.awt.Cursor;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
@@ -25,6 +26,13 @@ public class Form_SongResult extends javax.swing.JPanel {
     public void addEventLoadMusic(EventLoadMusic event) {
         this.event1 = event;   
     }
+    private EventShowLyricWithId eventShowLyric;
+
+    public void addEventShowLyricWithId(EventShowLyricWithId event) {
+        this.eventShowLyric = event;
+        music_Search1.addEventShowLyricWithId(event);
+    }
+    
 
     public Form_SongResult() {
         initComponents();
@@ -74,9 +82,11 @@ public class Form_SongResult extends javax.swing.JPanel {
         {
            // music_Search1.setVisible(true);
             
-            music_Search1.repaint();
+            music_Search1.setVisible(false);
+            if(result.getSongs() != null)
             music_Search1.init(result.getSongs());
-            
+            music_Search1.setVisible(true);
+         //   music_Search1.repaint();
             if(event1 != null)
             music_Search1.addEventLoadMusic(event1);
             txtNumberResult.setText("Có "+result.getCounterSong()+" kết quả được tìm thấy");

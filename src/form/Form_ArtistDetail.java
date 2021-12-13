@@ -2,6 +2,7 @@ package form;
 
 import component.Music_Artist;
 import event.EventBackForm;
+import event.EventShowLyricWithId;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -25,6 +26,12 @@ public class Form_ArtistDetail extends javax.swing.JPanel {
 
     public void addEventBackFormSelected(EventBackForm event) {
         this.event = event;
+    }
+    private EventShowLyricWithId eventShowLyric;
+
+    public void addEventShowLyricWithId(EventShowLyricWithId event) {
+        this.eventShowLyric = event;
+        music_Artist1.addEventShowLyricWithId(event);
     }
 
     public Model_Profile getData() {
@@ -60,7 +67,7 @@ public class Form_ArtistDetail extends javax.swing.JPanel {
         txtRName.setText("Tên thật: "+data.getRealName());
         txtDesc.setText(!data.getDescription().equals("") ? data.getDescription().replaceAll("<br>", ""):"Không có thông tin");
         music_Artist1.init(data.getAlbum());
-        
+        txtDesc.setCaretPosition(0);
         sp.getVerticalScrollBar().setValue(0);
         if (data.getImage() != null) {
             imageAvatar.setImage(data.getImage());
@@ -185,9 +192,9 @@ public class Form_ArtistDetail extends javax.swing.JPanel {
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                                 .addComponent(img, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(music_Artist1, javax.swing.GroupLayout.PREFERRED_SIZE, 581, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(64, Short.MAX_VALUE))
+                                .addGap(15, 15, 15)
+                                .addComponent(music_Artist1, javax.swing.GroupLayout.PREFERRED_SIZE, 572, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addGap(64, 64, 64))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

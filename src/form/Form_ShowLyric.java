@@ -36,9 +36,10 @@ public class Form_ShowLyric extends javax.swing.JPanel {
     public void initData(String songId)
     {
         Model_Music data = singleton.SingletonMusicService.getClientServiceInstance().getInfoSongById(songId);
+        
         txtName.setText(data.getName()+" - "+data.getArtistsNames());
         txtDesc.setText(singleton.SingletonMusicService.getClientServiceInstance().getLyricBySongId(songId).replaceAll("<br>",""));
-
+        txtDesc.setCaretPosition(0);
     }
     public Form_ShowLyric(Model_Music data) {
         initComponents();

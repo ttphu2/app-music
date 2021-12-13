@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package service;
+
 import jaco.mp3.player.MP3Player;
 import java.io.File;
 import java.io.FileInputStream;
@@ -12,6 +13,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -33,12 +35,15 @@ public class MusicService {
     public static List<Model_Music> myPlaylist;
     public static boolean playPlaylist = false;
     public static Model_Music mySong;
-   // private static List<String> playList = 
+    // private static List<String> playList = 
     //http://api.mp3.zing.vn/api/streaming/audio/ZUC7DBEC/128
-    public MusicService() {    
+
+    public MusicService() {
         mP3Player = new MP3Player();
+        myPlaylist = new ArrayList<>();
         mP3Player.setRepeat(true);
     }
+
     public void init() {
 //        try {
 //          URL url1 = new URL("http://api.mp3.zing.vn/api/streaming/audio/ZW67OIA0/128");
@@ -50,18 +55,19 @@ public class MusicService {
 //            Logger.getLogger(MusicService.class.getName()).log(Level.SEVERE, null, ex);
 //        }
     }
-    public Model_Music getCurrentSong(){
-        if(playPlaylist == false)
-        {
+
+    public Model_Music getCurrentSong() {
+        if (playPlaylist == false) {
             return mySong;
         }
-          return myPlaylist.get(mP3Player.getPlayingIndex());  
+        return myPlaylist.get(mP3Player.getPlayingIndex());
     }
+
     public void playNew(String songId) {
         try {
             mP3Player.stop();
             mP3Player = mP3Player.clearPlaylist();
-            mP3Player = mP3Player.add(new URL("http://api.mp3.zing.vn/api/streaming/audio/"+songId+"/128"));
+            mP3Player = mP3Player.add(new URL("http://api.mp3.zing.vn/api/streaming/audio/" + songId + "/128"));
             mP3Player.play();
             playPlaylist = false;
             mySong = singleton.SingletonMusicService.getClientServiceInstance().getInfoSongById(songId);
@@ -69,6 +75,7 @@ public class MusicService {
             Logger.getLogger(MusicService.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
     public void playMusic() {
         System.out.println("Run music");
         mP3Player.play();
@@ -83,13 +90,42 @@ public class MusicService {
         System.out.println("Stop music");
         mP3Player.pause();
     }
-    public void addToPlaylist(String url)
-    {
-        try {
-            mP3Player.add(new URL(url));
-        } catch (MalformedURLException ex) {
-            Logger.getLogger(MusicService.class.getName()).log(Level.SEVERE, null, ex);
+
+    public void addToPlaylist(Model_Music music) {     
+            myPlaylist.add(music);
+    }
+    public void removeToPlaylist(int index) {     
+            myPlaylist.remove(index);
+    }
+    public void runPlaylist() {
+        if (myPlaylist.size() == 0) {
+            return;
         }
+        mP3Player.stop();
+        mP3Player = mP3Player.clearPlaylist();
+        for (Model_Music item : myPlaylist) {
+            try {
+                mP3Player.add(new URL("http://api.mp3.zing.vn/api/streaming/audio/" + item.getSongId() + "/128"));
+            } catch (MalformedURLException ex) {
+                Logger.getLogger(MusicService.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        mP3Player.play();
+        playPlaylist = true;
+    }
+
+    public int checkExistInPlaylist(String songId) {
+        if (myPlaylist.size() == 0) {
+            return -1;
+        }
+        int index = 0;
+        for (Model_Music item : myPlaylist) {
+            if (item.getSongId().equals(songId)) {
+                return index;
+            }
+            index++;
+        }
+        return -1;
     }
 
     public void skipMusic() {
@@ -112,21 +148,27 @@ public class MusicService {
         }
         mP3Player.skipBackward();
     }
+
     public boolean isPlaying() {
-       
-       return mP3Player.isPlaying();
+
+        return mP3Player.isPlaying();
     }
+
     public boolean isRepeat() {
-       
-       return mP3Player.isRepeat();
+
+        return mP3Player.isRepeat();
     }
+
     public void setRepeat(boolean repeat) {
-       
-       mP3Player.setRepeat(repeat);
+
+        mP3Player.setRepeat(repeat);
     }
+
     public long getPosition() {
-       if(isPlaying()) return mP3Player.getPosition();
-       return 0;
+        if (isPlaying()) {
+            return mP3Player.getPosition();
+        }
+        return 0;
     }
 
 //    public void getPositionMusicNow() throws UnsupportedAudioFileException, IOException {
@@ -144,85 +186,25 @@ public class MusicService {
 //        System.out.println(totalSeconds);
 //        System.out.println(elapsedSeconds);
 //    }
-    public void startAt() throws FileNotFoundException, IOException{
-        
+    public void startAt() throws FileNotFoundException, IOException {
+
         InputStream inputStream = null;
-         Object playlistObject = null;
-       //  playlistObject = mP3Player.getPlaylist().get(0);
-         if (playlistObject instanceof File) {
-              inputStream = new FileInputStream((File) playlistObject);
-         } else if (playlistObject instanceof URL) {
-              inputStream = ((URL) playlistObject).openStream();
-         } else {
-              throw new IOException("this is impossible; how come the play list contains this kind of object? :: " + playlistObject.getClass());
-         }
-      
+        Object playlistObject = null;
+        //  playlistObject = mP3Player.getPlaylist().get(0);
+        if (playlistObject instanceof File) {
+            inputStream = new FileInputStream((File) playlistObject);
+        } else if (playlistObject instanceof URL) {
+            inputStream = ((URL) playlistObject).openStream();
+        } else {
+            throw new IOException("this is impossible; how come the play list contains this kind of object? :: " + playlistObject.getClass());
+        }
+
     }
 
-    public void setVolume(int value)
-    {
-        System.out.println("Volume "+ value);
+    public void setVolume(int value) {
+        System.out.println("Volume " + value);
         mP3Player.setVolume(value);
- 
-    }
-    public void volumeDownControl(Double value) {
-        Mixer.Info[] mixers = AudioSystem.getMixerInfo();
-        for (Mixer.Info mixerInfo : mixers) {
-            Mixer mixer = AudioSystem.getMixer(mixerInfo);
-            Line.Info[] lineInfos = mixer.getTargetLineInfo();
-            for (Line.Info lineInfo : lineInfos) {
-                Line line = null;
-                boolean opened = true;
-                try {
-                    line = mixer.getLine(lineInfo);
-                    opened = line.isOpen() || line instanceof Clip;
-                    if (!opened) {
-                        line.open();
-                    }
-                    FloatControl volControl = (FloatControl) line.getControl(FloatControl.Type.VOLUME);
-                    float currentVolume = volControl.getValue();
-                    Double volumeToCut = value;
-                    float changedCalc = (float) ((float) currentVolume - (double) volumeToCut);
-                    volControl.setValue(changedCalc);
 
-                } catch (LineUnavailableException | IllegalArgumentException lineException) {
-                } finally {
-                    if (line != null && !opened) {
-                        line.close();
-                    }
-                }
-            }
-        }
-    }
-
-    public void volumeControl(Double value) {
-        Mixer.Info[] mixers = AudioSystem.getMixerInfo();
-        for (Mixer.Info mixerInfo : mixers) {
-            Mixer mixer = AudioSystem.getMixer(mixerInfo);
-            Line.Info[] lineInfos = mixer.getTargetLineInfo();
-            for (Line.Info lineInfo : lineInfos) {
-                Line line = null;
-                boolean opened = true;
-                try {
-                    line = mixer.getLine(lineInfo);
-                    opened = line.isOpen() || line instanceof Clip;
-                    if (!opened) {
-                        line.open();
-                    }
-                    FloatControl volControl = (FloatControl) line.getControl(FloatControl.Type.VOLUME);
-                    float currentVolume = volControl.getValue();
-                    Double volumeToCut = value;
-                    float changedCalc = (float) ((double) volumeToCut);
-                    volControl.setValue(changedCalc);
-
-                } catch (LineUnavailableException | IllegalArgumentException lineException) {
-                } finally {
-                    if (line != null && !opened) {
-                        line.close();
-                    }
-                }
-            }
-        }
     }
 
     //test code:

@@ -48,6 +48,7 @@ public class Example7 {
 //      service.Service.getInstance().stopConnection();
     service.Service.getInstance().startConnection();
       singleton.SingletonMusicService.getClientServiceInstance().getSecretKey();
+     
       
   }
 public static final String formatTime(long secs) {

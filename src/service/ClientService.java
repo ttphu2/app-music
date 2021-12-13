@@ -88,7 +88,7 @@ public class ClientService {
             int no=1;
             for(JsonNode item : jsonData)
             {
-                listReturn.add(new Model_Music(Integer.toString(no),item.get("title").asText(),Helper.formatSecondToMusicTime(item.get("duration").asInt()),item.get("duration").asInt(),item.get("encodeId").asText(),item.get("artistsNames").asText()));  
+                listReturn.add(new Model_Music(Integer.toString(no),textOverflow(item.get("title").asText()),Helper.formatSecondToMusicTime(item.get("duration").asInt()),item.get("duration").asInt(),item.get("encodeId").asText(),item.get("artistsNames").asText()));  
                 no++;
             } 
             
@@ -150,7 +150,7 @@ public class ClientService {
                 for(int i=0;i<root.get("items").size();i++)
                 {
                    JsonNode item = root.get("items").get(i);
-                   album.add(new Model_Music(Integer.toString(i+1),item.get("title").asText(),Helper.formatSecondToMusicTime(item.get("duration").asInt()),item.get("duration").asInt(),item.get("encodeId").asText(),item.get("artistsNames").asText()));   
+                   album.add(new Model_Music(Integer.toString(i+1),textOverflow(item.get("title").asText()),Helper.formatSecondToMusicTime(item.get("duration").asInt()),item.get("duration").asInt(),item.get("encodeId").asText(),item.get("artistsNames").asText()));   
                 }
                 objReturn.setAlbum(album);
             }
@@ -190,7 +190,7 @@ public class ClientService {
                 return null;
             }
             JsonNode item = jsonNode.get("data");
-            objReturn = new Model_Music("1",item.get("title").asText(),Helper.formatSecondToMusicTime(item.get("duration").asInt()),item.get("duration").asInt(),item.get("encodeId").asText(),item.get("artistsNames").asText());
+            objReturn = new Model_Music("1",textOverflow(item.get("title").asText()),Helper.formatSecondToMusicTime(item.get("duration").asInt()),item.get("duration").asInt(),item.get("encodeId").asText(),item.get("artistsNames").asText());
         } catch (JsonProcessingException ex) {
             Logger.getLogger(ClientService.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -246,7 +246,7 @@ public class ClientService {
                 for(int i=0;i < items.size();i++)
                 {
                     JsonNode item = items.get(i);
-                    musics.add(new Model_Music(Integer.toString(no),item.get("title").asText(),Helper.formatSecondToMusicTime(item.get("duration").asInt()),item.get("duration").asInt(),item.get("encodeId").asText(),item.get("artistsNames").asText())); 
+                    musics.add(new Model_Music(Integer.toString(no),textOverflow(item.get("title").asText()),Helper.formatSecondToMusicTime(item.get("duration").asInt()),item.get("duration").asInt(),item.get("encodeId").asText(),item.get("artistsNames").asText())); 
                     no++;
                 }
                 objReturn.setSongs(musics);
@@ -300,5 +300,8 @@ public class ClientService {
         }
         return "";
     }
-   
+   public String textOverflow(String name)
+   {
+       return name.length() > 35 ? name.substring(0,29)+"...":name;
+   }
 }
