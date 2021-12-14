@@ -27,6 +27,7 @@ public class ListPlaylist<E extends Object> extends JList<E> {
     private int playIndex = -1;
     private EventLoadMusic event;
     private int position = -1;
+
     public void addEventLoadMusic(EventLoadMusic event) {
         this.event = event;
     }
@@ -49,28 +50,39 @@ public class ListPlaylist<E extends Object> extends JList<E> {
             @Override
             public void mouseClicked(MouseEvent me) {
                 if (SwingUtilities.isLeftMouseButton(me)) {
-                    playIndex = locationToIndex(me.getPoint());
-                    Model_Music item = (Model_Music) model.get(playIndex);
+                    position = locationToIndex(me.getPoint());
+                    Model_Music item = (Model_Music) model.get(position);
                     if (checkMouseOver(me.getPoint())) {
-                        playIndex = -1;
                         int check = SingletonMusicService.getMusicServiceInstance().checkExistInPlaylist(item.getSongId());
                         if (check != -1) {
+                            
                             SingletonMusicService.getMusicServiceInstance().removeToPlaylist(check);
-                            SingletonMusicService.getMusicServiceInstance().stopMusic();
-
-                        
-                        List<Model_Music> result = singleton.SingletonMusicService.getMusicServiceInstance().getPlaylist();
-                        if (result != null && result.size() > 0) {
-                            clearData();
-                            int no=0;
-                            for (Model_Music song : result) {
-                                song.setNo(String.valueOf(no+1));
-                                addItem(song);
-                                no++;
+                             List<Model_Music> result = singleton.SingletonMusicService.getMusicServiceInstance().getPlaylist();
+                            if(result.size()>0 && playIndex == locationToIndex(me.getPoint())){
+                                SingletonMusicService.getMusicServiceInstance().loadPlaylist();
+                                if(result.size()>locationToIndex(me.getPoint()))
+                                {
+                                    SingletonMusicService.getMusicServiceInstance().playIndexPlaylist(locationToIndex(me.getPoint()));
+                                }else{
+                                    SingletonMusicService.getMusicServiceInstance().playIndexPlaylist(0);
+                                }
+                                
+                            }else{
+                                //SingletonMusicService.getMusicServiceInstance().stopMusic();
                             }
-                        }else{
-                            clearData();
-                        }
+                           
+                            if (result != null && result.size() > 0) {
+                                clearData();
+                                int no = 0;
+                                for (Model_Music song : result) {
+                                    song.setNo(String.valueOf(no + 1));
+                                    addItem(song);
+                                    no++;
+                                }
+                            } else {
+                                clearData();
+                                playIndex = -1;
+                            }
                         }
 
                         repaint();
@@ -94,7 +106,7 @@ public class ListPlaylist<E extends Object> extends JList<E> {
     private boolean checkMouseOver(Point mouse) {
         int width = this.getWidth();
         int height = 35;
-        int height2 = 35 * playIndex;
+        int height2 = 35 * position;
         int marginButton = 5;
         int buttonSize = height - marginButton * 2;
         Point point = new Point(width - height + 10, height2 + marginButton);

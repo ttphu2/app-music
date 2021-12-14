@@ -24,6 +24,7 @@ import model.Model_Menu;
  */
 public class Menu extends javax.swing.JPanel {
     private EventMenuSelected event;
+    private Thread animationText;
     public void addEventMenuSelected(EventMenuSelected event)
     {
         this.event = event;
@@ -37,12 +38,10 @@ public class Menu extends javax.swing.JPanel {
         list1.addItem(new Model_Menu("Discovery", "discovery"));
         list1.addItem(new Model_Menu("Playlist", "playlist"));
         list1.addItem(new Model_Menu("Search", "song"));
-        list1.addItem(new Model_Menu("Exit", "song"));
+        list1.addItem(new Model_Menu("Exit", "exit"));
         list1.setSelectedIndex(0);
-//        list2.addItem(new Model_Menu("Store", "store"));
-//        list2.addItem(new Model_Menu("Radio", "radio"));
-//        list2.addItem(new Model_Menu("For You", "love"));
-//        list2.addItem(new Model_Menu("Browse", "browse"));
+
+        
     }
 
 
@@ -100,11 +99,11 @@ public class Menu extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(panelMoving, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20)
+                .addGap(61, 61, 61)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(list1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(313, 313, 313))
+                .addContainerGap(272, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 

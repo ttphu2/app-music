@@ -119,7 +119,7 @@
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="b1" green="1d" red="a9" type="rgb"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="C&#xf3; 200 k&#x1ebf;t qu&#x1ea3; &#x111;&#x1b0;&#x1ee3;c t&#xec;m th&#x1ea5;y"/>
+                <Property name="text" type="java.lang.String" value="Kh&#xf4;ng c&#xf3; k&#x1ebf;t qu&#x1ea3; n&#xe0;o &#x111;&#x1b0;&#x1ee3;c t&#xec;m th&#x1ea5;y"/>
               </Properties>
             </Component>
             <Container class="javax.swing.JPanel" name="jPanel3">

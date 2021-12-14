@@ -35,6 +35,10 @@ public class ListMusic<E extends Object> extends JList<E>{
     public void addEventShowLyricWithId(EventShowLyricWithId event) {
         this.eventShowLyric = event;
     }
+    public void setPlayingIndex(int index)
+    {
+        playIndex = index;
+    }
     public ListMusic() {
         model = new DefaultListModel();
         setModel(model);
@@ -67,8 +71,9 @@ public class ListMusic<E extends Object> extends JList<E>{
                        playIndex = position;
                        if(playIndex != -1)
                         SingletonMusicService.getMusicServiceInstance().playNew(item.getSongId());
-                       if(event != null)
-                        event.loadMusic(); // load time music lên main frame
+                        SingletonMusicService.getMusicServiceInstance().runEventInitSong();
+//                       if(event != null)
+//                        event.loadMusic(); // load time music lên main frame
                         repaint();
                    }         
                }

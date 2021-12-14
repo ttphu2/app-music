@@ -69,6 +69,7 @@ public class MostPopular extends javax.swing.JLayeredPane {
             @Override
             public void mouseClicked(MouseEvent e) {
                SingletonMusicService.getMusicServiceInstance().playNew(data.getSongId());
+               SingletonMusicService.getMusicServiceInstance().runEventInitSong();
             }
         });
         panel.add(item);

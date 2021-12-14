@@ -32,6 +32,7 @@ public class Music_Artist extends javax.swing.JPanel {
     public void init(List<Model_Music> items)
     {
         list.clearData();
+        list.setPlayingIndex(-1);
         if(items != null && items.size() > 0)
         {
             for(Model_Music item : items)

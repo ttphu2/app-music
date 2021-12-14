@@ -185,7 +185,12 @@ public class Main1 extends javax.swing.JFrame {
                 {
                     form_Playlist.initData();
                     setForm(form_Playlist);                  
+                }else if(index == 3)
+                {
+                    Service.getInstance().stopConnection();
+                    System.exit(0);
                 }
+                
             }
         });
 
@@ -235,6 +240,12 @@ public class Main1 extends javax.swing.JFrame {
         timer = new Timer();
         //event click music change time
         form_Artists.addEventLoadMuisc(new EventLoadMusic() {
+            @Override
+            public void loadMusic() {
+                bottom2.initMusic();
+            }
+        });
+        form_SongResult.addEventLoadMusic(new EventLoadMusic() {
             @Override
             public void loadMusic() {
                 bottom2.initMusic();

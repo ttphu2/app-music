@@ -35,6 +35,7 @@ public class Music_Search extends javax.swing.JPanel {
         if(listMusic != null && listMusic.size() > 0)
         {
             list.clearData();
+            list.setPlayingIndex(-1);
             for(Model_Music item : listMusic)
             {
                 item.setName(item.getName()+" - "+item.getArtistsNames());

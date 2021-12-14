@@ -131,7 +131,7 @@ public class Form_SongResult extends javax.swing.JPanel {
 
         txtNumberResult.setFont(new java.awt.Font("SansSerif", 0, 16)); // NOI18N
         txtNumberResult.setForeground(new java.awt.Color(169, 29, 177));
-        txtNumberResult.setText("Có 200 kết quả được tìm thấy");
+        txtNumberResult.setText("Không có kết quả nào được tìm thấy");
 
         jPanel3.setBackground(new java.awt.Color(245, 245, 245));
 

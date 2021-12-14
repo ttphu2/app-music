@@ -129,7 +129,7 @@ public class MP3Player extends JPanel {
     }
 
     private void init() {
-        new MP3PlayerThemeDefault().apply(this);
+       // new MP3PlayerThemeDefault().apply(this);
     }
 
     /**
