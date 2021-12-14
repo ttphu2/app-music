@@ -52,7 +52,7 @@ public class ListMusic<E extends Object> extends JList<E>{
                    position = locationToIndex(me.getPoint());
                    if(checkMouseOver(me.getPoint()))
                    {
-                       playIndex = -1;
+
                        eventShowLyric.showLyric(item.getSongId());
                        return;
                    }

@@ -88,7 +88,6 @@ public class ListPlaylist<E extends Object> extends JList<E> {
                         repaint();
                         return;
                     } else if(checkMouseOverAddSong(me.getPoint())){
-                        playIndex = -1;
                        eventShowLyric.showLyric(item.getSongId());
                        return;
                     }
