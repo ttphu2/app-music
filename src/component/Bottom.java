@@ -25,6 +25,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import model.Model_Music;
 import singleton.SingletonMusicService;
+import util.Helper;
 
 /**
  *
@@ -92,15 +93,31 @@ public class Bottom extends javax.swing.JPanel {
             
         });
     
-     //   beginTimer();
+        beginTimer();
     }
     public void initMusic()
     {
       Model_Music curent = SingletonMusicService.getMusicServiceInstance().getCurrentSong();
       if(curent!= null)
       {
+          cancelTimer();
           slider1.setValue(0);
+          slider1.setMaximum(curent.getDuration());
           jLabel2.setText(curent.getTime());
+          beginTimer();
+      }
+    }
+    public void initMusic(Model_Music model)
+    {
+      if(model!= null)
+      {
+          cancelTimer();
+          slider1.setValue(0);
+          lbTimePlaying.setText("00:00");
+          slider1.setMaximum(model.getDuration());
+          jLabel2.setText(model.getTime());
+          play1.setIconPlay();
+          beginTimer();
       }
     }
 
@@ -193,18 +210,7 @@ public class Bottom extends javax.swing.JPanel {
         super.paintComponent(grphcs);
     }
 
-    
-
-//    public void startTimer() {
-//       int count=0;
-//        final Timer t = new Timer(1000, new ActionListener() {
-//               @Override
-//               public void actionPerformed(java.awt.event.ActionEvent e) {
-//                   
-//               }
-//            });
-//            t.start();
-//    }
+   
     public void beginTimer() {
 		
 		timer = new Timer();
@@ -214,7 +220,8 @@ public class Bottom extends javax.swing.JPanel {
 			public void run() {
                                 if(SingletonMusicService.getMusicServiceInstance().isPlaying())
                                 {
-                                  slider1.setValue(Math.round(SingletonMusicService.getMusicServiceInstance().getPosition()));
+                                  slider1.setValue(slider1.getValue()+1);
+                                  lbTimePlaying.setText(Helper.formatSecondToMusicTime(slider1.getValue()));
                                 }                               
 //				double current = mediaPlayer.getCurrentTime().toSeconds();
 //				double end = media.getDuration().toSeconds();

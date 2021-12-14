@@ -24,6 +24,7 @@ import singleton.SingletonMusicService;
 public class ListMusic<E extends Object> extends JList<E>{
     private final DefaultListModel model;
     private int playIndex = -1;
+    private int position = -1;
     private EventLoadMusic event;
 
     public void addEventLoadMusic(EventLoadMusic event) {
@@ -42,8 +43,9 @@ public class ListMusic<E extends Object> extends JList<E>{
             @Override
             public void mouseClicked(MouseEvent me) {
                if(SwingUtilities.isLeftMouseButton(me)){
-                   playIndex = locationToIndex(me.getPoint());
-                   Model_Music item = (Model_Music) model.get(playIndex);
+                  // playIndex = locationToIndex(me.getPoint());
+                   Model_Music item = (Model_Music) model.get(locationToIndex(me.getPoint()));
+                   position = locationToIndex(me.getPoint());
                    if(checkMouseOver(me.getPoint()))
                    {
                        playIndex = -1;
@@ -52,7 +54,6 @@ public class ListMusic<E extends Object> extends JList<E>{
                    }
                    else if(checkMouseOverAddSong(me.getPoint()))
                    {
-                       playIndex = -1;
                        int check = SingletonMusicService.getMusicServiceInstance().checkExistInPlaylist(item.getSongId());
                        if ( check == -1) {
                            System.out.println("");
@@ -63,7 +64,7 @@ public class ListMusic<E extends Object> extends JList<E>{
                        repaint();
                        return;
                    }else{
-                       playIndex = locationToIndex(me.getPoint());
+                       playIndex = position;
                        if(playIndex != -1)
                         SingletonMusicService.getMusicServiceInstance().playNew(item.getSongId());
                        if(event != null)
@@ -78,7 +79,7 @@ public class ListMusic<E extends Object> extends JList<E>{
     private boolean checkMouseOver(Point mouse) {
         int width = this.getWidth();
         int height = 35;
-        int height2 = 35*playIndex;
+        int height2 = 35*position;
         int marginButton = 5;
         int buttonSize = height - marginButton * 2;
         Point point = new Point(width - height + 10, height2+marginButton);
@@ -88,7 +89,7 @@ public class ListMusic<E extends Object> extends JList<E>{
     private boolean checkMouseOverAddSong(Point mouse) {
         int width = this.getWidth();
         int height = 35;
-        int height2 = 35*playIndex;
+        int height2 = 35*position;
         int marginButton = 3;
         int buttonSize = height - marginButton * 2;
         Point point = new Point(width - height -5, height2+marginButton);

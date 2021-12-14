@@ -36,7 +36,6 @@ public class Music_Artist extends javax.swing.JPanel {
         {
             for(Model_Music item : items)
             {
-                item.setName(item.getName()+" - "+item.getArtistsNames());
                 list.addItem(item);
             }           
         }

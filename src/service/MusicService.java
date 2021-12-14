@@ -5,6 +5,7 @@
  */
 package service;
 
+import event.EventInitSong;
 import jaco.mp3.player.MP3Player;
 import java.io.File;
 import java.io.FileInputStream;
@@ -17,12 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.FloatControl;
-import javax.sound.sampled.Line;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.Mixer;
 import model.Model_Music;
 
 /**
@@ -35,8 +30,21 @@ public class MusicService {
     public static List<Model_Music> myPlaylist;
     public static boolean playPlaylist = false;
     public static Model_Music mySong;
+    private EventInitSong eventInitSong;
+    Boolean repeat=true;
+    private static int volume=50;
+
+    public void addEventInitSong(EventInitSong event) {
+        this.eventInitSong = event;
+    }
+
     // private static List<String> playList = 
     //http://api.mp3.zing.vn/api/streaming/audio/ZUC7DBEC/128
+    public void runEventInitSong() {
+        if (eventInitSong != null) {
+            eventInitSong.initSong(getCurrentSong());
+        }
+    }
 
     public MusicService() {
         mP3Player = new MP3Player();
@@ -45,15 +53,13 @@ public class MusicService {
     }
 
     public void init() {
-//        try {
-//          URL url1 = new URL("http://api.mp3.zing.vn/api/streaming/audio/ZW67OIA0/128");
-//          URL url2 = new URL("http://api.mp3.zing.vn/api/streaming/audio/ZU9AOO00/128");
-//          mP3Player = new MP3Player(url1,url2);
-//          mP3Player.setRepeat(true);
-//          mP3Player.stop();
-//        } catch (MalformedURLException ex) {
-//            Logger.getLogger(MusicService.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+        mP3Player.setRepeat(repeat);
+        mP3Player.setVolume(volume);
+    }
+
+    public List<Model_Music> getPlaylist() {
+
+        return myPlaylist;
     }
 
     public Model_Music getCurrentSong() {
@@ -63,16 +69,50 @@ public class MusicService {
         return myPlaylist.get(mP3Player.getPlayingIndex());
     }
 
+    public int getPlayingIndex() {
+        if (playPlaylist && myPlaylist.size() > 0) {
+            return mP3Player.getPlayingIndex();
+        }
+        return -1;
+    }
+
     public void playNew(String songId) {
         try {
             mP3Player.stop();
-            mP3Player = mP3Player.clearPlaylist();
+            mP3Player = new MP3Player();
+            init();
             mP3Player = mP3Player.add(new URL("http://api.mp3.zing.vn/api/streaming/audio/" + songId + "/128"));
             mP3Player.play();
             playPlaylist = false;
-            mySong = singleton.SingletonMusicService.getClientServiceInstance().getInfoSongById(songId);
+            mySong = singleton.SingletonMusicService.getClientServiceInstance().getInfoSongById(songId);        
         } catch (MalformedURLException ex) {
             Logger.getLogger(MusicService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void playIndexPlaylist(int playingIndex) {
+        if (myPlaylist.size() > 0) {
+            loadPlaylist();
+            mP3Player.setPlayingIndex(playingIndex);
+            playPlaylist = true;       
+            if(eventInitSong != null) eventInitSong.initSong(myPlaylist.get(playingIndex));
+            mP3Player.play();
+            
+        }
+    }
+
+    public void loadPlaylist() {
+        mP3Player.stop();
+        if (myPlaylist.size() > 0) {
+            mP3Player = new MP3Player();
+            init();
+            for (Model_Music item : myPlaylist) {
+                try {
+                    mP3Player.add(new URL("http://api.mp3.zing.vn/api/streaming/audio/" + item.getSongId() + "/128"));
+                } catch (MalformedURLException ex) {
+                    Logger.getLogger(MusicService.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
     }
 
@@ -91,27 +131,36 @@ public class MusicService {
         mP3Player.pause();
     }
 
-    public void addToPlaylist(Model_Music music) {     
+    public void addToPlaylist(Model_Music music) {
+        try {
             myPlaylist.add(music);
+            mP3Player.add(new URL("http://api.mp3.zing.vn/api/streaming/audio/" + music.getSongId() + "/128"));
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(MusicService.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
-    public void removeToPlaylist(int index) {     
-            myPlaylist.remove(index);
+
+    public void removeToPlaylist(int index) {
+        myPlaylist.remove(index);
     }
+
     public void runPlaylist() {
         if (myPlaylist.size() == 0) {
             return;
         }
         mP3Player.stop();
-        mP3Player = mP3Player.clearPlaylist();
+        mP3Player = new MP3Player();
         for (Model_Music item : myPlaylist) {
             try {
-                mP3Player.add(new URL("http://api.mp3.zing.vn/api/streaming/audio/" + item.getSongId() + "/128"));
+                mP3Player=mP3Player.add(new URL("http://api.mp3.zing.vn/api/streaming/audio/" + item.getSongId() + "/128"));
             } catch (MalformedURLException ex) {
                 Logger.getLogger(MusicService.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        mP3Player.play();
         playPlaylist = true;
+        if(eventInitSong != null) eventInitSong.initSong(myPlaylist.get(0));
+        
+        mP3Player.play();
     }
 
     public int checkExistInPlaylist(String songId) {
@@ -160,7 +209,7 @@ public class MusicService {
     }
 
     public void setRepeat(boolean repeat) {
-
+        this.repeat =repeat;
         mP3Player.setRepeat(repeat);
     }
 

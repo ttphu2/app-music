@@ -8,6 +8,7 @@ package main;
 import event.EventArtistSelected;
 import event.EventBackForm;
 import event.EventClickBtn;
+import event.EventInitSong;
 import event.EventLoadMusic;
 import event.EventMenuSelected;
 import event.EventShowLyric;
@@ -16,6 +17,7 @@ import form.Form1;
 import form.Form_Art;
 import form.Form_ArtistDetail;
 import form.Form_ArtistResult;
+import form.Form_Playlist;
 import form.Form_ShowLyric;
 import form.Form_SongResult;
 import java.awt.Color;
@@ -34,10 +36,8 @@ import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
-import javax.swing.JSlider;
-import model.Model_SearchResult;
+import model.Model_Music;
 import org.apache.commons.lang3.StringUtils;
-import service.ClientService;
 import service.Service;
 import swing.DataSearch;
 import swing.EventCallBack;
@@ -66,6 +66,7 @@ public class Main1 extends javax.swing.JFrame {
     private Timer timer; // timer dung de tao event doi. user nhap input xong
     private TimerTask task;// task dung de tao event doi. user nhap input xong
     private Executor executor;
+    private Form_Playlist form_Playlist;
 
     public Main1() {
         initComponents();
@@ -83,6 +84,7 @@ public class Main1 extends javax.swing.JFrame {
         form_ArtistsDetail = new Form_ArtistDetail();
         form_showLyric = new Form_ShowLyric();
         form_SongResult = new Form_SongResult();
+        form_Playlist = new Form_Playlist();
         // sp.setVerticalScrollBar(new ScrollBar());
         setBackground(new Color(0, 0, 0, 0));
         //init search panel
@@ -177,8 +179,12 @@ public class Main1 extends javax.swing.JFrame {
                 if (index == 0) {
                     oldForm = form_Artists;
                     setForm(form_Artists);
-                } else {
-                    setForm(form_ArtistsDetail);
+                } else if (index == 2){
+                    setForm(form_SongResult);
+                } else if(index == 1)
+                {
+                    form_Playlist.initData();
+                    setForm(form_Playlist);                  
                 }
             }
         });
@@ -196,10 +202,7 @@ public class Main1 extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(null, "Vui lòng không để trống thanh tim kiếm hoặc nhập khoảng trống",
                             "Có lỗi xảy ra", JOptionPane.WARNING_MESSAGE);
                     return;
-                }
-               
-                
-               
+                }         
                 oldForm = form_SongResult;
                 try {
                     for (int i = 1; i <= 100; i++) {
@@ -253,6 +256,14 @@ public class Main1 extends javax.swing.JFrame {
             @Override
             public void clicked() {
                 setForm(form_SongResult);
+            }
+        });
+        singleton.SingletonMusicService.getMusicServiceInstance().addEventInitSong(new EventInitSong() {
+            @Override
+            public void initSong(Model_Music music) {
+                bottom2.initMusic(music);
+                if(singleton.SingletonMusicService.getMusicServiceInstance().playPlaylist)
+                form_Playlist.setPlayingIndex(singleton.SingletonMusicService.getMusicServiceInstance().getPlayingIndex());
             }
         });
         // showForm(new Form_Artists());

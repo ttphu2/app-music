@@ -133,7 +133,14 @@ public class Play extends javax.swing.JPanel {
         
        
     }//GEN-LAST:event_jButton1MouseClicked
-
+    public void setIconPause()
+    {
+       jButton1.setIcon(new ImageIcon(getClass().getResource("/icon/pause.png")));
+    }
+    public void setIconPlay()
+    {
+       jButton1.setIcon(new ImageIcon(getClass().getResource("/icon/playing.png")));
+    }
     private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
      SingletonMusicService.getMusicServiceInstance().backMusic();
       

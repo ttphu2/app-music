@@ -9,7 +9,7 @@ import javax.swing.ImageIcon;
 import model.Model_Music;
 import singleton.SingletonMusicService;
 
-public class ItemMusic extends javax.swing.JPanel {
+public class ItemMusicInPlaylist extends javax.swing.JPanel {
 
     private final Model_Music data;
     private boolean play = false;
@@ -39,7 +39,7 @@ public class ItemMusic extends javax.swing.JPanel {
       
            jLabel1.setIcon(icon_addsong_selected);
     }
-    public ItemMusic(Model_Music data) {
+    public ItemMusicInPlaylist(Model_Music data) {
         this.data = data;
         initComponents();
         setOpaque(false);
@@ -69,9 +69,9 @@ public class ItemMusic extends javax.swing.JPanel {
         lbTime.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lbTime.setText("03:00");
 
-        lbShowLyric.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/lyric.png"))); // NOI18N
+        lbShowLyric.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/close.png"))); // NOI18N
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/addsong.png"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/lyric.png"))); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);

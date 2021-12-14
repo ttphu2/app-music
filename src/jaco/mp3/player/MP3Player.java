@@ -89,7 +89,13 @@ public class MP3Player extends JPanel {
     public int getPlayingIndex() {
         return playingIndex;
     }
-
+    public void setPlayingIndex(int index) {
+        if(playingIndex < playlist.size())
+        {
+            playingIndex = index;
+        }
+    }
+    
     public void setPlaylist(List<Object> playlist) {
         this.playlist = playlist;
     }
@@ -388,6 +394,7 @@ public class MP3Player extends JPanel {
                     playingThread = null;
 
                     if (skipForwardAllowed) {
+                        isStopped = false;
                         skipForward();
                     }
                 }
@@ -498,6 +505,7 @@ public class MP3Player extends JPanel {
         stop();
 
         if (playAllowed) {
+            singleton.SingletonMusicService.getMusicServiceInstance().runEventInitSong();
             play();
         }
     }

@@ -34,14 +34,15 @@ public class Menu extends javax.swing.JPanel {
     public Menu() {
         initComponents();
         setOpaque(false);
+        list1.addItem(new Model_Menu("Discovery", "discovery"));
         list1.addItem(new Model_Menu("Playlist", "playlist"));
-        list1.addItem(new Model_Menu("Artists", "artists"));
-        list1.addItem(new Model_Menu("Albums", "albums"));
-        list1.addItem(new Model_Menu("Songs", "song"));
-        list2.addItem(new Model_Menu("Store", "store"));
-        list2.addItem(new Model_Menu("Radio", "radio"));
-        list2.addItem(new Model_Menu("For You", "love"));
-        list2.addItem(new Model_Menu("Browse", "browse"));
+        list1.addItem(new Model_Menu("Search", "song"));
+        list1.addItem(new Model_Menu("Exit", "song"));
+        list1.setSelectedIndex(0);
+//        list2.addItem(new Model_Menu("Store", "store"));
+//        list2.addItem(new Model_Menu("Radio", "radio"));
+//        list2.addItem(new Model_Menu("For You", "love"));
+//        list2.addItem(new Model_Menu("Browse", "browse"));
     }
 
 
@@ -51,8 +52,6 @@ public class Menu extends javax.swing.JPanel {
 
         list1 = new component.ListMenu<>();
         jLabel1 = new javax.swing.JLabel();
-        list2 = new component.ListMenu<>();
-        jLabel2 = new javax.swing.JLabel();
         panelMoving = new javax.swing.JPanel();
 
         list1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -65,17 +64,6 @@ public class Menu extends javax.swing.JPanel {
         jLabel1.setForeground(new java.awt.Color(229, 229, 229));
         jLabel1.setText("LIBRARY");
         jLabel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 50, 1, 1));
-
-        list2.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                list2MousePressed(evt);
-            }
-        });
-
-        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(229, 229, 229));
-        jLabel2.setText("DISCOVER");
-        jLabel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 50, 1, 1));
 
         panelMoving.setOpaque(false);
         panelMoving.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
@@ -105,9 +93,7 @@ public class Menu extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(list1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE)
-            .addComponent(list2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE)
             .addComponent(panelMoving, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
@@ -118,20 +104,13 @@ public class Menu extends javax.swing.JPanel {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(list1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(list2, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(313, 313, 313))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void list1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_list1MousePressed
-        list2.clearSelection();
+       
     }//GEN-LAST:event_list1MousePressed
-
-    private void list2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_list2MousePressed
-        list1.clearSelection();
-    }//GEN-LAST:event_list2MousePressed
 
     private void panelMovingMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMovingMousePressed
 
@@ -175,9 +154,7 @@ public class Menu extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private component.ListMenu<String> list1;
-    private component.ListMenu<String> list2;
     private javax.swing.JPanel panelMoving;
     // End of variables declaration//GEN-END:variables
 }

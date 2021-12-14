@@ -11,11 +11,10 @@ import singleton.SingletonMusicService;
  *
  * @author hocgioinhatlop
  */
-public class Music extends javax.swing.JPanel {
+public class Playlist extends javax.swing.JPanel {
 
-    public Music() {
+    public Playlist() {
         initComponents();
-        init();
     }
     private EventLoadMusic event;
 
@@ -29,30 +28,41 @@ public class Music extends javax.swing.JPanel {
         this.eventShowLyric = event;
         list.addEventShowLyricWithId(event);
     }
-    private void init()
+    public void init(List<Model_Music> listMusic)
     {
-        List<Model_Music> listMusic  = SingletonMusicService.getClientServiceInstance().getHotSongInHubDetail();
-        if(listMusic != null && listMusic.size() > 0)
+       if(listMusic != null && listMusic.size() > 0)
         {
+            list.clearData();
+            int no = 0;
             for(Model_Music item : listMusic)
             {
+                item.setNo(String.valueOf(no+1));
                 list.addItem(item);
+                no++;
             }           
         }
-      
+              
+        
+    }
+    public void setPlayingIndex(int index)
+    {
+        list.setPlayingIndex̣x(index);
     }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        list = new component.ListMusic<>();
+        list = new component.ListPlaylist<>();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel1.setFont(new java.awt.Font("SansSerif", 0, 20)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel1.setText("Most Trending Music");
+        jLabel1.setText("My Playlist");
+
+        list.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        list.setOpaque(true);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -61,8 +71,8 @@ public class Music extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(list, javax.swing.GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE)
-                    .addComponent(jLabel1))
+                    .addComponent(jLabel1)
+                    .addComponent(list, javax.swing.GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -71,14 +81,13 @@ public class Music extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(list, javax.swing.GroupLayout.DEFAULT_SIZE, 293, Short.MAX_VALUE)
-                .addGap(0, 0, 0))
+                .addComponent(list, javax.swing.GroupLayout.DEFAULT_SIZE, 293, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
-    private component.ListMusic<String> list;
+    private component.ListPlaylist<String> list;
     // End of variables declaration//GEN-END:variables
 }
