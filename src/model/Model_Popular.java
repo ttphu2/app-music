@@ -16,6 +16,16 @@ public class Model_Popular {
     String title;
     String description;
     String songId;
+    int type;
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+    
 
     public Icon getImage() {
         return image;
@@ -44,11 +54,12 @@ public class Model_Popular {
     public Model_Popular() {
     }
 
-    public Model_Popular(Icon image, String title, String description,String songId) {
+    public Model_Popular(Icon image, String title, String description,String songId,int type) {
         this.image = image;
         this.title = title;
         this.description = description;
         this.songId = songId;
+        this.type = type;
     }
 
     public String getSongId() {

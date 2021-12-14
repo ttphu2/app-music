@@ -46,7 +46,7 @@ public class Form_ArtistDetail extends javax.swing.JPanel {
         img.setPreferredSize(new Dimension(350, 350));
         img.setMaximumSize(new Dimension(350, 350));
         img.setMinimumSize(new Dimension(350, 350));
-        ImageIcon abc = new ImageIcon(getClass().getResource("/icon/test/avicii.png"));
+        ImageIcon abc = new ImageIcon(getClass().getResource("/icon/test/bg2.jpg"));
         img.setIcon(scaleImage(abc, 350, 350));
         img.setOpaque(false);
 

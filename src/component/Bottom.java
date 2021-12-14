@@ -116,7 +116,7 @@ public class Bottom extends javax.swing.JPanel {
           lbTimePlaying.setText("00:00");
           slider1.setMaximum(model.getDuration());
           jLabel2.setText(model.getTime());
-          play1.setIconPlay();
+          play1.setIconPause();
           beginTimer();
       }
     }

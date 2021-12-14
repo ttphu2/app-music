@@ -38,7 +38,6 @@ public class Music_Search extends javax.swing.JPanel {
             list.setPlayingIndex(-1);
             for(Model_Music item : listMusic)
             {
-                item.setName(item.getName()+" - "+item.getArtistsNames());
                 list.addItem(item);
             }           
         }

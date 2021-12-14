@@ -65,6 +65,7 @@ public class MostPopular extends javax.swing.JLayeredPane {
         
         ItemImage item = new ItemImage();
         item.setData(data);
+        if(data.getType() == 1)
         item.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {

@@ -87,7 +87,12 @@ public class ListPlaylist<E extends Object> extends JList<E> {
 
                         repaint();
                         return;
-                    } else {
+                    } else if(checkMouseOverAddSong(me.getPoint())){
+                        playIndex = -1;
+                       eventShowLyric.showLyric(item.getSongId());
+                       return;
+                    }
+                    else {
                         playIndex = locationToIndex(me.getPoint());
                         if (playIndex != -1) {
                             SingletonMusicService.getMusicServiceInstance().playIndexPlaylist(playIndex);
@@ -110,6 +115,16 @@ public class ListPlaylist<E extends Object> extends JList<E> {
         int marginButton = 5;
         int buttonSize = height - marginButton * 2;
         Point point = new Point(width - height + 10, height2 + marginButton);
+        Ellipse2D.Double circle = new Ellipse2D.Double(point.x, point.y, buttonSize, buttonSize);
+        return circle.contains(mouse);
+    }
+     private boolean checkMouseOverAddSong(Point mouse) {
+        int width = this.getWidth();
+        int height = 35;
+        int height2 = 35*position;
+        int marginButton = 3;
+        int buttonSize = height - marginButton * 2;
+        Point point = new Point(width - height -5, height2+marginButton);
         Ellipse2D.Double circle = new Ellipse2D.Double(point.x, point.y, buttonSize, buttonSize);
         return circle.contains(mouse);
     }

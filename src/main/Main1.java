@@ -13,7 +13,6 @@ import event.EventLoadMusic;
 import event.EventMenuSelected;
 import event.EventShowLyric;
 import event.EventShowLyricWithId;
-import form.Form1;
 import form.Form_Art;
 import form.Form_ArtistDetail;
 import form.Form_ArtistResult;
@@ -61,7 +60,6 @@ public class Main1 extends javax.swing.JFrame {
     private Form_SongResult form_SongResult;
     private Form_ArtistResult form_artistResult;
     private Form_ShowLyric form_showLyric;
-    private Form1 form1;
     private JComponent oldForm;
     private Timer timer; // timer dung de tao event doi. user nhap input xong
     private TimerTask task;// task dung de tao event doi. user nhap input xong
@@ -78,9 +76,9 @@ public class Main1 extends javax.swing.JFrame {
         
         Service.getInstance().startConnection();
         AESUtil.init();
+        singleton.SingletonMusicService.getClientServiceInstance().sendSecretKey();
         executor = Executors.newSingleThreadExecutor();
         form_Artists = new Form_Art();
-        form1 = new Form1();
         form_ArtistsDetail = new Form_ArtistDetail();
         form_showLyric = new Form_ShowLyric();
         form_SongResult = new Form_SongResult();
@@ -169,6 +167,15 @@ public class Main1 extends javax.swing.JFrame {
                
                form_showLyric.initData(songId);
                oldForm=form_ArtistsDetail;
+               setForm(form_showLyric);
+            }
+        });
+        form_Playlist.addEventShowLyricWithId(new EventShowLyricWithId() {
+            @Override
+            public void showLyric(String songId) {
+               
+               form_showLyric.initData(songId);
+               oldForm=form_Playlist;
                setForm(form_showLyric);
             }
         });

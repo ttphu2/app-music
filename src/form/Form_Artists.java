@@ -49,7 +49,7 @@ public class Form_Artists extends javax.swing.JPanel {
     public void init() {
         List<HomeDataRes> listData = SingletonMusicService.getClientServiceInstance().getHomeData();
         for (HomeDataRes item : listData) {
-            mostPopular.addImage(new Model_Popular(new ImageIcon(HashUtil.convertToBufferImage(item.getBanner())), "", "", item.encodeId));
+            mostPopular.addImage(new Model_Popular(new ImageIcon(HashUtil.convertToBufferImage(item.getBanner())), "", "", item.encodeId,item.getType()));
         }
     }
 

@@ -26,7 +26,7 @@ public class Form_Playlist extends javax.swing.JPanel {
 
     public void addEventShowLyricWithId(EventShowLyricWithId event) {
         this.eventShowLyric = event;
-//        music_Search1.addEventShowLyricWithId(event);
+        playlist2.addEventShowLyricWithId(event);
     }
     
 

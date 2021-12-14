@@ -43,11 +43,14 @@ public class ItemMusic extends javax.swing.JPanel {
         this.data = data;
         initComponents();
         setOpaque(false);
-        lbText.setText(data.getName()+" - "+data.getArtistsNames());
+        lbText.setText(textOverflow(data.getName()+" - "+data.getArtistsNames()));
         lbTime.setText(data.getTime());
 
     }
-
+    public String textOverflow(String name)
+   {
+       return name.length() > 50 ? name.substring(0,50)+"...":name;
+   }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

@@ -12,6 +12,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Base64;
 
 import java.util.List;
 import java.util.logging.Level;
@@ -54,25 +55,7 @@ public class ClientService {
         }
             return result;
     }
-    public String getSongUrl128KBPS(String songId){
-        String result = null;
-        try {
-            
-            String json = AESUtil.decrypt(SingletonMusicService.getDataHubServiceInstance().getStreamingUrlBySongId(songId));
-            ObjectMapper om = new ObjectMapper();
-            JsonNode jsonNode = om.readTree(json);
-            if(!jsonNode.get("err").asText().equals("0"))
-            {
-                return result;
-            }
-            JsonNode jsonData = jsonNode.get("data").get("128");
-            result = jsonData.asText();
-            
-        } catch (JsonProcessingException ex) {
-            Logger.getLogger(ClientService.class.getName()).log(Level.SEVERE, null, ex);
-        }
-            return result;
-    }
+   
     public List<Model_Music> getHotSongInHubDetail(){
         List<Model_Music> listReturn = new ArrayList<>();
         try {
@@ -278,15 +261,12 @@ public class ClientService {
         }
             return objReturn;
     }
-    public String getSecretKey()
+    public String sendSecretKey()
     {
         try {
-            String key_encrypted = Service.getInstance().sendMessage("SECRETKEY");
-        
-            String secretKey = !key_encrypted.equals("") ? RSAUtil.decrypt(key_encrypted, RSAUtil.privateKey) : "";
-            System.out.println("Sk="+secretKey);
-            return secretKey;
-            
+            String secretKey = Base64.getEncoder().encodeToString(RSAUtil.encrypt(AESUtil.key, RSAUtil.publicKey));
+            String key_encrypted = Service.getInstance().sendMessage("SECRETKEY_"+secretKey);         
+            System.out.println("Sk="+secretKey);     
         } catch (IllegalBlockSizeException ex) {
             Logger.getLogger(ClientService.class.getName()).log(Level.SEVERE, null, ex);
         } catch (InvalidKeyException ex) {

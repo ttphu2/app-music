@@ -40,23 +40,13 @@ public class Music_Artist extends javax.swing.JPanel {
                 list.addItem(item);
             }           
         }
-        
-//        list.addItem(new Model_Music("2", "Heaven", "04:37"));
-//        list.addItem(new Model_Music("3", "SOS (feat. Aloe Blacc)", "02:37"));
-//        list.addItem(new Model_Music("4", "Bad Reputation (feat. Joe Janiak)", "03:25"));
-//        list.addItem(new Model_Music("5", "Ain't A Thing", "03:03"));
-//        list.addItem(new Model_Music("6", "Hold The line (feat. A R I Z O N A)", "02:51"));
-//        list.addItem(new Model_Music("7", "Freak (feat. Bonn)", "02:59"));
-//        list.addItem(new Model_Music("8", "Excuse me Mr Sir (feat. Vargas & Lagola)", "03:07"));
-//        list.addItem(new Model_Music("9", "Heart Upon My Sleeve (feat. Imagine Dragons)", "04:14"));
-//        list.addItem(new Model_Music("10", "Never Leave Me (feat. Joe Janiak)", "02:51"));
-//        list.addItem(new Model_Music("11", "Fades Away (feat. Noonie Bao)", "02:58"));
-//        list.addItem(new Model_Music("12", "Wake Me Up", "04:07"));
-//        list.addItem(new Model_Music("13", "You Make Me", "03:53"));
-//        list.addItem(new Model_Music("14", "Hey Brother", "04:15"));
-//        list.addItem(new Model_Music("15", "Addicted To You", "02:28"));;
+
         
     }
+     public String textOverflow(String name)
+   {
+       return name.length() > 14 ? name.substring(0,14)+"...":name;
+   }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

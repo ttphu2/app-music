@@ -124,11 +124,11 @@ public class Play extends javax.swing.JPanel {
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
       if(SingletonMusicService.getMusicServiceInstance().isPlaying()){
         SingletonMusicService.getMusicServiceInstance().pauseMusic();
-        jButton1.setIcon(new ImageIcon(getClass().getResource("/icon/pause.png")));
+        jButton1.setIcon(new ImageIcon(getClass().getResource("/icon/playing.png")));
       }       
       else{
           SingletonMusicService.getMusicServiceInstance().playMusic();
-          jButton1.setIcon(new ImageIcon(getClass().getResource("/icon/playing.png")));
+          jButton1.setIcon(new ImageIcon(getClass().getResource("/icon/pause.png")));
       }
         
        
