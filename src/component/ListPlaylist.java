@@ -7,6 +7,7 @@ import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Ellipse2D;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
@@ -14,6 +15,7 @@ import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 import javax.swing.SwingUtilities;
 import model.Model_Music;
+import org.apache.commons.lang3.SerializationUtils;
 import singleton.SingletonMusicService;
 
 /**
@@ -27,6 +29,7 @@ public class ListPlaylist<E extends Object> extends JList<E> {
     private int playIndex = -1;
     private EventLoadMusic event;
     private int position = -1;
+    List<Model_Music> result = new ArrayList<>();
 
     public void addEventLoadMusic(EventLoadMusic event) {
         this.event = event;
@@ -44,6 +47,7 @@ public class ListPlaylist<E extends Object> extends JList<E> {
 
     public ListPlaylist() {
         model = new DefaultListModel();
+        result = new ArrayList<>();
         setModel(model);
         setOpaque(false);
         addMouseListener(new MouseAdapter() {
@@ -57,7 +61,7 @@ public class ListPlaylist<E extends Object> extends JList<E> {
                         if (check != -1) {
                             
                             SingletonMusicService.getMusicServiceInstance().removeToPlaylist(check);
-                             List<Model_Music> result = singleton.SingletonMusicService.getMusicServiceInstance().getPlaylist();
+                            result = singleton.SingletonMusicService.getMusicServiceInstance().getPlaylist();
                             if(result.size()>0 && playIndex == locationToIndex(me.getPoint())){
                                 SingletonMusicService.getMusicServiceInstance().loadPlaylist();
                                 if(result.size()>locationToIndex(me.getPoint()))
@@ -74,9 +78,11 @@ public class ListPlaylist<E extends Object> extends JList<E> {
                             if (result != null && result.size() > 0) {
                                 clearData();
                                 int no = 0;
+
                                 for (Model_Music song : result) {
-                                    song.setNo(String.valueOf(no + 1));
-                                    addItem(song);
+                                    Model_Music copy = SerializationUtils.clone(song);
+                                    copy.setNo(String.valueOf(no + 1));
+                                    addItem(copy);
                                     no++;
                                 }
                             } else {

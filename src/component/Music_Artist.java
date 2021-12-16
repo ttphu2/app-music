@@ -5,12 +5,7 @@ import event.EventLoadMusic;
 import event.EventShowLyricWithId;
 import java.util.List;
 import model.Model_Music;
-import singleton.SingletonMusicService;
 
-/**
- *
- * @author hocgioinhatlop
- */
 public class Music_Artist extends javax.swing.JPanel {
 
     public Music_Artist() {
@@ -39,9 +34,7 @@ public class Music_Artist extends javax.swing.JPanel {
             {
                 list.addItem(item);
             }           
-        }
-
-        
+        }        
     }
      public String textOverflow(String name)
    {

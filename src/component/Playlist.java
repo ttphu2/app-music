@@ -5,6 +5,7 @@ import event.EventLoadMusic;
 import event.EventShowLyricWithId;
 import java.util.List;
 import model.Model_Music;
+import org.apache.commons.lang3.SerializationUtils;
 import singleton.SingletonMusicService;
 
 /**
@@ -12,7 +13,7 @@ import singleton.SingletonMusicService;
  * @author hocgioinhatlop
  */
 public class Playlist extends javax.swing.JPanel {
-
+    List<Model_Music> musics;
     public Playlist() {
         initComponents();
     }
@@ -30,14 +31,16 @@ public class Playlist extends javax.swing.JPanel {
     }
     public void init(List<Model_Music> listMusic)
     {
-       if(listMusic != null && listMusic.size() > 0)
+        musics = listMusic;
+       if(musics != null && musics.size() > 0)
         {
             list.clearData();
             int no = 0;
-            for(Model_Music item : listMusic)
+            for(Model_Music item : musics)
             {
-                item.setNo(String.valueOf(no+1));
-                list.addItem(item);
+                Model_Music copy = SerializationUtils.clone(item);
+                copy.setNo(String.valueOf(no+1));
+                list.addItem(copy);
                 no++;
             }           
         }

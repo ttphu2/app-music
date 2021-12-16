@@ -5,12 +5,14 @@
  */
 package model;
 
+import java.io.Serializable;
+
 /**
  *
  * @author hocgioinhatlop
  */
-public class Model_Music {
-    String no;
+public class Model_Music implements Serializable{
+    private String no;
     String name;
     String time;
     int duration;

@@ -39,6 +39,7 @@ public class ListMusic<E extends Object> extends JList<E>{
     {
         playIndex = index;
     }
+
     public ListMusic() {
         model = new DefaultListModel();
         setModel(model);
